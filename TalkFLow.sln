@@ -23,13 +23,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalkFlow.IntegrationTests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalkFlow.ArchitectureTests", "tests\TalkFlow.ArchitectureTests\TalkFlow.ArchitectureTests.csproj", "{B6A938F4-E9CD-4582-BC93-437CC44BDEDE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		docs\api-specs.md = docs\api-specs.md
+		docs\domain-events.md = docs\domain-events.md
+		docs\entities.md = docs\entities.md
+		docs\project-structure.md = docs\project-structure.md
+		docs\signalr-specs.md = docs\signalr-specs.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{D85C54C2-9E0D-402C-9DA1-64E26A16BA33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -65,6 +71,9 @@ Global
 		{B6A938F4-E9CD-4582-BC93-437CC44BDEDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6A938F4-E9CD-4582-BC93-437CC44BDEDE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D85C54C2-9E0D-402C-9DA1-64E26A16BA33} = {C646B64E-86F2-4B17-9CEC-0A1F69DA820C}
 		{9AE9211C-15D9-4EF0-B8B9-B70558FA200C} = {C646B64E-86F2-4B17-9CEC-0A1F69DA820C}
@@ -74,5 +83,8 @@ Global
 		{C5156B24-D2B2-49B2-891A-9DABAD483B31} = {303F38F4-2095-4B3B-B949-BDA10155A117}
 		{F0039F5E-55FB-4F6D-9AE6-113A57C2F967} = {303F38F4-2095-4B3B-B949-BDA10155A117}
 		{B6A938F4-E9CD-4582-BC93-437CC44BDEDE} = {303F38F4-2095-4B3B-B949-BDA10155A117}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FF1AEED2-C193-4A99-B6CE-E2226F093AF9}
 	EndGlobalSection
 EndGlobal
