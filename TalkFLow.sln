@@ -28,6 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{02EA681E-C
 		docs\api-specs.md = docs\api-specs.md
 		docs\domain-events.md = docs\domain-events.md
 		docs\entities.md = docs\entities.md
+		docs\install-packages.md = docs\install-packages.md
 		docs\project-structure.md = docs\project-structure.md
 		docs\signalr-specs.md = docs\signalr-specs.md
 	EndProjectSection
