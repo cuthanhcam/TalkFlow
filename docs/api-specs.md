@@ -5,12 +5,12 @@
 - **Base URL**: `https://localhost:5001`
 - **Auth**: JWT Bearer Token
 - **Content-Type**: `application/json`
-- **Stack**: ASP.NET Core 8 Web API + SignalR + EF Core 8 + MediatR (CQRS)
+- **Stack**: ASP.NET Core 8 Web API + SignalR + EF Core 8 + MediatR (CQRS - đang phát triển)
 
 ## Authentication Flow (ẩn danh)
 
 1. Tạo user/phòng bằng API public (không cần đăng nhập ban đầu)
-2. Backend khởi tạo user ẩn danh và tsrả về thông tin user + token (nếu áp dụng)
+2. Backend khởi tạo user ẩn danh và trả về thông tin user + token (nếu áp dụng)
 3. Client dùng JWT để call API bảo vệ và connect SignalR hubs
 
 ## REST API (Presentation Layer)
@@ -128,9 +128,15 @@ Ghi chú quyền: Các thao tác update/delete/block thường yêu cầu user h
 
 ## DTOs chính
 
-- UserDto: { userId, userName, displayName, email, photoUrl, lastActive, isLocked, gender?, age?, nationality?, strangerFilter?, token }
-- RoomDto: { roomId, roomName, hostId, hostDisplayName, memberCount, createdAt, isChatBlocked, isActive, securityCode? }
-- MessageDto: { id, senderId, senderDisplayName, content, sentAt, isDeleted }
+- **UserDto**: { userId, userName, displayName, email, photoUrl, lastActive, isLocked, gender?, age?, nationality?, strangerFilter?, token }
+- **RoomDto**: { roomId, roomName, hostId, hostDisplayName, memberCount, createdAt, isChatBlocked, isActive, securityCode? }
+- **MessageDto**: { id, senderId, senderDisplayName, content, sentAt, isDeleted }
+- **CreateUserDto**: { displayName, email?, gender?, age?, nationality?, photoUrl?, strangerFilter? }
+- **CreateRoomDto**: { roomName, securityCode?, displayName }
+- **JoinRoomDto**: { roomId, displayName, securityCode? }
+- **UpdateUserDto**: { displayName?, email?, gender?, age?, nationality?, photoUrl? }
+- **UpdateRoomDto**: { roomName?, securityCode? }
+- **SendMessageDto**: { content }
 
 ## Lỗi chuẩn
 
