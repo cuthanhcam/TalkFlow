@@ -6,29 +6,29 @@ TalkFlow là một ứng dụng video chat realtime được xây dựng theo ki
 ## Kiến trúc DDD
 
 ### 1. Domain Layer (`TalkFlow.Domain`)
-- **Aggregates**: User, Room, Message, StrangerFilter
-- **Value Objects**: UserId, RoomId, DisplayName, Gender, Age, etc.
-- **Domain Events**: UserCreated, RoomCreated, MessageSent, etc.
+- **Aggregates**: User, Room, Message, StrangerFilter, Match
+- **Value Objects**: UserId, RoomId, DisplayName, Gender, Age, RoomName, SecurityCode, etc.
+- **Domain Events**: UserCreated, RoomCreated, MessageSent, UserJoined, UserLeft, etc.
 - **Domain Services**: IUserDomainService, IRoomDomainService, IStrangerMatchingService
-- **Repositories**: IUserRepository, IRoomRepository, IMessageRepository
-- **Specifications**: UserByGenderSpecification, RoomBySecurityCodeSpecification
+- **Repositories**: IUserRepository, IRoomRepository, IMessageRepository, IMatchRepository
+- **Specifications**: UserByGenderSpecification, UserByAgeRangeSpecification, UserByNationalitySpecification
 
 ### 2. Application Layer (`TalkFlow.Application`)
-- **CQRS**: Commands và Queries với MediatR
-- **DTOs**: UserDto, RoomDto, MessageDto, CreateUserDto, etc.
-- **Services**: IUserService, IRoomService, IMessageService
-- **Mappings**: AutoMapper profiles
-- **Behaviors**: ValidationBehavior, LoggingBehavior
+- **CQRS**: Commands và Queries với MediatR (đang phát triển)
+- **DTOs**: UserDto, RoomDto, MessageDto, CreateUserDto, CreateRoomDto, etc.
+- **Services**: IUserService, IRoomService, IMessageService với implementations
+- **Mappings**: AutoMapper profiles cho User, Room, Message
+- **Behaviors**: ValidationBehavior, LoggingBehavior, TransactionBehavior
 
 ### 3. Infrastructure Layer (`TalkFlow.Infrastructure`)
 - **Data Access**: Entity Framework Core với SQL Server
-- **Repositories**: Implementation của Domain repositories
-- **External Services**: JwtTokenService, FileStorageService
-- **Configuration**: Database, JWT, CORS
+- **Repositories**: Implementation đầy đủ của Domain repositories
+- **External Services**: JwtTokenService, UserDomainService, RoomDomainService
+- **Configuration**: EF Core configurations cho tất cả entities
 
 ### 4. Presentation Layer (`TalkFlow.Presentation`)
-- **Web API**: RESTful API endpoints
-- **SignalR Hubs**: ChatHub, PresenceHub, StrangerHub
+- **Web API**: RESTful API endpoints (User, Room, Message)
+- **SignalR Hubs**: ChatHub, PresenceHub, StrangerHub, TestHub
 - **Controllers**: UserController, RoomController, MessageController
 - **Authentication**: JWT Bearer Token
 
@@ -73,7 +73,7 @@ TalkFlow là một ứng dụng video chat realtime được xây dựng theo ki
 - **JWT Authentication**
 - **AutoMapper**
 - **FluentValidation**
-- **MediatR (CQRS)**
+- **MediatR (CQRS)** - đang phát triển
 
 ## Cài đặt và chạy
 
@@ -84,8 +84,8 @@ TalkFlow là một ứng dụng video chat realtime được xây dựng theo ki
 
 ### 2. Clone repository
 ```bash
-git clone <repository-url>
-cd TalkFlow.DDD
+git clone https://github.com/cuthanhcam/TalkFlow.git
+cd TalkFlow
 ```
 
 ### 3. Cấu hình database
@@ -93,7 +93,7 @@ Cập nhật connection string trong `src/TalkFlow.Presentation/appsettings.json
 ```json
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=TalkFlowDDD;Trusted_Connection=true;MultipleActiveResultSets=true"
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=TalkFlow;Trusted_Connection=true;MultipleActiveResultSets=true"
   }
 }
 ```
@@ -189,7 +189,7 @@ dotnet run
 
 ### Testing
 - Unit tests: `TalkFlow.UnitTests`
-- Integration tests: `TalkFlow.IntegrationTests`
+- Integration tests: `TalkFlow.IntegrationTests`  
 - Architecture tests: `TalkFlow.ArchitectureTests`
 
 ## Deployment
