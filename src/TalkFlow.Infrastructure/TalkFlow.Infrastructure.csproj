@@ -28,4 +28,9 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TalkFlow.Domain\TalkFlow.Domain.csproj" />
+    <ProjectReference Include="..\TalkFlow.Application\TalkFlow.Application.csproj" />
+  </ItemGroup>
+
 </Project>

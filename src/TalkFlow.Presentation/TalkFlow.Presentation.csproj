@@ -14,4 +14,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TalkFlow.Application\TalkFlow.Application.csproj" />
+    <ProjectReference Include="..\TalkFlow.Infrastructure\TalkFlow.Infrastructure.csproj" />
+    <ProjectReference Include="..\TalkFlow.Shared\TalkFlow.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
