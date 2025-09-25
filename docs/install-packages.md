@@ -1,4 +1,25 @@
-﻿## **Danh sách câu lệnh CLI cài đặt packages**
+﻿## **Reference: Câu lệnh CLI cài đặt packages cho dự án DDD .NET 8.0**
+```
+# Application depends on Domain + Shared
+dotnet add src/TalkFlow.Application/TalkFlow.Application.csproj reference src/TalkFlow.Domain/TalkFlow.Domain.csproj
+dotnet add src/TalkFlow.Application/TalkFlow.Application.csproj reference src/TalkFlow.Shared/TalkFlow.Shared.csproj
+
+# Infrastructure depends on Domain (và Application nếu bạn implement Application interfaces)
+dotnet add src/TalkFlow.Infrastructure/TalkFlow.Infrastructure.csproj reference src/TalkFlow.Domain/TalkFlow.Domain.csproj
+# nếu cần:
+dotnet add src/TalkFlow.Infrastructure/TalkFlow.Infrastructure.csproj reference src/TalkFlow.Application/TalkFlow.Application.csproj
+
+# Presentation depends on Application, Infrastructure, Shared
+dotnet add src/TalkFlow.Presentation/TalkFlow.Presentation.csproj reference src/TalkFlow.Application/TalkFlow.Application.csproj
+dotnet add src/TalkFlow.Presentation/TalkFlow.Presentation.csproj reference src/TalkFlow.Infrastructure/TalkFlow.Infrastructure.csproj
+dotnet add src/TalkFlow.Presentation/TalkFlow.Presentation.csproj reference src/TalkFlow.Shared/TalkFlow.Shared.csproj
+
+# Tests (ví dụ UnitTests)
+dotnet add tests/TalkFlow.UnitTests/TalkFlow.UnitTests.csproj reference src/TalkFlow.Application/TalkFlow.Application.csproj
+dotnet add tests/TalkFlow.UnitTests/TalkFlow.UnitTests.csproj reference src/TalkFlow.Domain/TalkFlow.Domain.csproj
+```
+
+## **Danh sách câu lệnh CLI cài đặt packages**
 
 ### **1. Domain Layer (TalkFlow.Domain)**
 ```bash

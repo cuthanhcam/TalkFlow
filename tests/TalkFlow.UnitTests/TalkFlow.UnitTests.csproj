@@ -29,4 +29,9 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TalkFlow.Application\TalkFlow.Application.csproj" />
+    <ProjectReference Include="..\..\src\TalkFlow.Domain\TalkFlow.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
