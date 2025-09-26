@@ -95,8 +95,8 @@ migrations/
 
 ### Configuration and Secrets ###
 # Sensitive Configuration Files
-appsettings.json
-appsettings.*.json
+**/appsettings.json
+**/appsettings.*.json
 *.env
 *.pem
 *.cert
