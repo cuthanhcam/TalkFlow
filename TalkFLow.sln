@@ -16,6 +16,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalkFlow.Presentation", "src\TalkFlow.Presentation\TalkFlow.Presentation.csproj", "{AC796FBC-32A1-469B-A505-CE31325FCC23}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{303F38F4-2095-4B3B-B949-BDA10155A117}"
+	ProjectSection(SolutionItems) = preProject
+		tests\signalr-test.html = tests\signalr-test.html
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TalkFlow.UnitTests", "tests\TalkFlow.UnitTests\TalkFlow.UnitTests.csproj", "{C5156B24-D2B2-49B2-891A-9DABAD483B31}"
 EndProject
