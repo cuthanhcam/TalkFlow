@@ -20,4 +20,10 @@
     <ProjectReference Include="..\TalkFlow.Shared\TalkFlow.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\Message\" />
+    <Folder Include="Commands\Room\" />
+    <Folder Include="Commands\User\" />
+  </ItemGroup>
+
 </Project>
