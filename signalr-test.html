@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>TalkFlow SignalR Test - Local Server</title>
+    <script src="https://unpkg.com/@microsoft/signalr@latest/dist/browser/signalr.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        .section {
+            background-color: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        button {
+            padding: 10px 16px;
+            margin: 5px 5px 5px 0;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background 0.2s ease-in-out;
+        }
+
+            button:hover {
+                background: #0056b3;
+            }
+
+            button:disabled {
+                background: #ccc;
+                cursor: not-allowed;
+            }
+
+        .log {
+            border: 1px solid #ccc;
+            padding: 12px;
+            margin: 10px 0;
+            height: 220px;
+            overflow-y: auto;
+            background: #fefefe;
+            font-family: monospace;
+            font-size: 0.9rem;
+            border-radius: 6px;
+        }
+
+            .log div {
+                margin-bottom: 6px;
+                padding: 4px 6px;
+                border-radius: 4px;
+            }
+
+        .info {
+            color: #0056b3;
+        }
+
+        .success {
+            color: #2e7d32;
+        }
+
+        .error {
+            color: #b71c1c;
+        }
+
+        .warning {
+            color: #e65100;
+        }
+
+        p {
+            margin-top: 0;
+        }
+
+        @media (max-width: 600px) {
+            button {
+                display: block;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>TalkFlow SignalR Test</h1>
+    <p><strong>Server:</strong> http://localhost:5088</p>
+
+    <div class="section">
+        <h2>Test Hub (No Authentication Required)</h2>
+        <button onclick="connectToTestHub()" id="connectBtn">Connect to Test Hub</button>
+        <button onclick="joinTestRoom()" id="joinBtn" disabled>Join Test Room</button>
+        <button onclick="sendTestMessage()" id="sendBtn" disabled>Send Test Message</button>
+        <button onclick="updateTestPresence()" id="presenceBtn" disabled>Update Presence</button>
+        <button onclick="startTestMatching()" id="matchBtn" disabled>Start Matching</button>
+        <button onclick="disconnectTestHub()" id="disconnectBtn" disabled>Disconnect</button>
+        <div id="testLog" class="log"></div>
+    </div>
+
+    <div class="section">
+        <h2>Original Hubs (Require Authentication)</h2>
+        <button onclick="testChatHub()">Test Chat Hub</button>
+        <button onclick="testPresenceHub()">Test Presence Hub</button>
+        <button onclick="testStrangerHub()">Test Stranger Hub</button>
+        <div id="originalLog" class="log"></div>
+    </div>
+
+    <div class="section">
+        <h2>Connection Status</h2>
+        <div id="statusLog" class="log"></div>
+    </div>
+
+    <script>
+        let testConnection = null;
+        let connectionStatus = 'Disconnected';
+
+        function updateStatus(status) {
+            connectionStatus = status;
+            addLog('statusLog', `Status: ${status}`, 'info');
+            updateButtons();
+        }
+
+        function updateButtons() {
+            const isConnected = connectionStatus === 'Connected';
+            document.getElementById('connectBtn').disabled = isConnected;
+            document.getElementById('joinBtn').disabled = !isConnected;
+            document.getElementById('sendBtn').disabled = !isConnected;
+            document.getElementById('presenceBtn').disabled = !isConnected;
+            document.getElementById('matchBtn').disabled = !isConnected;
+            document.getElementById('disconnectBtn').disabled = !isConnected;
+        }
+
+        // Helper to log messages to a specific container
+        function addLog(containerId, message, type) {
+            const container = document.getElementById(containerId);
+            const timestamp = new Date().toLocaleTimeString();
+            const messageDiv = document.createElement("div");
+            messageDiv.className = type;
+            messageDiv.textContent = `[${timestamp}] ${message}`;
+            container.appendChild(messageDiv);
+            container.scrollTop = container.scrollHeight;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        // --- Test Hub Logic ---
+        async function connectToTestHub() {
+            try {
+                addLog('testLog', 'Attempting to connect to Test Hub...', 'info');
+
+                testConnection = new signalR.HubConnectionBuilder()
+                    .withUrl("http://localhost:5088/hubs/test")
+                    .withAutomaticReconnect()
+                    .configureLogging(signalR.LogLevel.Information)
+                    .build();
+
+                testConnection.on("Connected", (data) => {
+                    addLog('testLog', `Connected: ${data.message}`, 'success');
+                    updateStatus('Connected');
+                });
+
+                testConnection.on("UserJoined", (user) => {
+                    addLog('testLog', `User joined: ${user.displayName}`, 'info');
+                });
+
+                testConnection.on("UserLeft", (user) => {
+                    addLog('testLog', `User left: ${user.displayName}`, 'warning');
+                });
+
+                testConnection.on("MessageReceived", (message) => {
+                    addLog('testLog', `Message: ${message.content} from ${message.senderDisplayName}`, 'info');
+                });
+
+                testConnection.on("UserOnline", (user) => {
+                    addLog('testLog', `User online: ${user.displayName}`, 'success');
+                });
+
+                testConnection.on("UserOffline", (user) => {
+                    addLog('testLog', `User offline: ${user.displayName}`, 'warning');
+                });
+
+                testConnection.on("MatchFound", (match) => {
+                    addLog('testLog', `Match found! Room: ${match.roomId}`, 'success');
+                });
+
+                testConnection.onclose((error) => {
+                    addLog('testLog', `Connection closed: ${error || 'No error'}`, 'error');
+                    updateStatus('Disconnected');
+                });
+
+                await testConnection.start();
+                addLog('testLog', 'Test Hub connection started successfully!', 'success');
+
+            } catch (err) {
+                addLog('testLog', `Connection failed: ${err.message}`, 'error');
+                updateStatus('Failed');
+            }
+        }
+
+        async function joinTestRoom() {
+            if (testConnection && testConnection.state === signalR.HubConnectionState.Connected) {
+                try {
+                    await testConnection.invoke("JoinRoom", "test-room-123");
+                    addLog('testLog', 'Joined test room successfully', 'success');
+                } catch (err) {
+                    addLog('testLog', `Join room failed: ${err.message}`, 'error');
+                }
+            } else {
+                addLog('testLog', 'Not connected to Test Hub', 'error');
+            }
+        }
+
+        async function sendTestMessage() {
+            if (testConnection && testConnection.state === signalR.HubConnectionState.Connected) {
+                try {
+                    await testConnection.invoke("SendMessage", "test-room-123", "Hello from Test Hub!");
+                    addLog('testLog', 'Sent test message successfully', 'success');
+                } catch (err) {
+                    addLog('testLog', `Send message failed: ${err.message}`, 'error');
+                }
+            } else {
+                addLog('testLog', 'Not connected to Test Hub', 'error');
+            }
+        }
+
+        async function updateTestPresence() {
+            if (testConnection && testConnection.state === signalR.HubConnectionState.Connected) {
+                try {
+                    await testConnection.invoke("UpdatePresence", "online");
+                    addLog('testLog', 'Updated presence to online', 'success');
+                } catch (err) {
+                    addLog('testLog', `Update presence failed: ${err.message}`, 'error');
+                }
+            } else {
+                addLog('testLog', 'Not connected to Test Hub', 'error');
+            }
+        }
+
+        async function startTestMatching() {
+            if (testConnection && testConnection.state === signalR.HubConnectionState.Connected) {
+                try {
+                    await testConnection.invoke("StartMatching");
+                    addLog('testLog', 'Started matching process', 'success');
+                } catch (err) {
+                    addLog('testLog', `Start matching failed: ${err.message}`, 'error');
+                }
+            } else {
+                addLog('testLog', 'Not connected to Test Hub', 'error');
+            }
+        }
+
+        async function disconnectTestHub() {
+            if (testConnection) {
+                try {
+                    await testConnection.stop();
+                    addLog('testLog', 'Disconnected from Test Hub', 'warning');
+                    updateStatus('Disconnected');
+                } catch (err) {
+                    addLog('testLog', `Disconnect failed: ${err.message}`, 'error');
+                }
+            }
+        }
+
+        // --- Authenticated Hubs Testing (without token, for testing failure) ---
+        async function testChatHub() {
+            try {
+                addLog('originalLog', 'Testing Chat Hub...', 'info');
+                const connection = new signalR.HubConnectionBuilder()
+                    .withUrl("http://localhost:5088/hubs/chathub")
+                    .build();
+                await connection.start();
+                addLog('originalLog', 'Chat Hub connected (unexpected!)', 'success');
+                await connection.stop();
+            } catch (err) {
+                addLog('originalLog', `Chat Hub failed: ${err.message}`, 'error');
+            }
+        }
+
+        async function testPresenceHub() {
+            try {
+                addLog('originalLog', 'Testing Presence Hub...', 'info');
+                const connection = new signalR.HubConnectionBuilder()
+                    .withUrl("http://localhost:5088/hubs/presence")
+                    .build();
+                await connection.start();
+                addLog('originalLog', 'Presence Hub connected (unexpected!)', 'success');
+                await connection.stop();
+            } catch (err) {
+                addLog('originalLog', `Presence Hub failed: ${err.message}`, 'error');
+            }
+        }
+
+        async function testStrangerHub() {
+            try {
+                addLog('originalLog', 'Testing Stranger Hub...', 'info');
+                const connection = new signalR.HubConnectionBuilder()
+                    .withUrl("http://localhost:5088/hubs/stranger")
+                    .build();
+                await connection.start();
+                addLog('originalLog', 'Stranger Hub connected (unexpected!)', 'success');
+                await connection.stop();
+            } catch (err) {
+                addLog('originalLog', `Stranger Hub failed: ${err.message}`, 'error');
+            }
+        }
+
+        // Initialize logs and buttons
+        updateStatus('Disconnected');
+        addLog('statusLog', 'Ready to test SignalR connections', 'info');
+    </script>
+</body>
+</html>
