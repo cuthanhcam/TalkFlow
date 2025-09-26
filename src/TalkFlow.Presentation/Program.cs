@@ -78,14 +78,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 // Add MediatR (scan Application assembly)
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(
-    Assembly.Load("InstaTalk.Application"),
+    Assembly.Load("TalkFlow.Application"),
     Assembly.GetExecutingAssembly()));
 
 // Add AutoMapper (scan Application)
 builder.Services.AddAutoMapper(typeof(UserMappingProfile).Assembly);
 
 // Add FluentValidation (scan Application)
-builder.Services.AddValidatorsFromAssembly(Assembly.Load("InstaTalk.Application"));
+builder.Services.AddValidatorsFromAssembly(Assembly.Load("TalkFlow.Application"));
 
 // Add Behaviors
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
