@@ -20,4 +20,9 @@
     <ProjectReference Include="..\TalkFlow.Shared\TalkFlow.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Hubs\" />
+  </ItemGroup>
+
 </Project>
