@@ -1,22 +1,29 @@
 ﻿@{
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "TalkFlow - Connect & Chat";
 }
 
-@section customHead {
-    <link rel="stylesheet" href="~/css/home_index.css" asp-append-version="true" />
-}
-
-<div class="entry-box">
-    <h2 class="popup-header">You want to meet?</h2>
-    <div style="padding: 30px; align-content: center">
-        <a class="custom-btn" href="#" onclick="location.href='@Url.Action("FriendHub", "Home")'">
-            FRIENDS
-            <span></span>
-        </a>
-        <a class="custom-btn" href="#" onclick="location.href='@Url.Action("Index", "Stranger")'">
-            STRANGER
-            <span></span>
-        </a>
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center animated-bg">
+    <div class="col-md-6 col-lg-4">
+        <div class="card-modern particle-glow p-4 text-center">
+            <div class="mb-4">
+                <h1 class="h2 mb-3" style="background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    TalkFlow
+                </h1>
+                <p class="text-muted mb-0">Choose how you want to connect</p>
+            </div>
+            
+            <div class="d-grid gap-3">
+                <a href="@Url.Action("FriendHub", "Home")" class="btn btn-modern-primary btn-lg">
+                    <i class="fas fa-users me-2"></i>
+                    Chat with Friends
+                </a>
+                
+                <a href="@Url.Action("Index", "Stranger")" class="btn btn-modern-secondary btn-lg">
+                    <i class="fas fa-user-secret me-2"></i>
+                    Meet New People
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 
