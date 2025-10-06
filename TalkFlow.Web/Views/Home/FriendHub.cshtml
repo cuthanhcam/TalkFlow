@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Home";
+}
+
+@section customHead {
+    <link rel="stylesheet" href="~/css/home_friendhub.css" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+}
+
+<div class="modal fade" id="ModalJoinRoom" tabindex="-1" aria-labelledby="ModalJoinRoomTitle" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content card-modern">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-white">Join Room</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="form_join_room" method="post" autocomplete="off" asp-action="JoinRoom" asp-controller="Home">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label text-white">Display Name</label>
+                        <input type="text" name="JoinRoom.DisplayName" required class="form-control form-control-modern" placeholder="Enter your display name" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-white">Room ID</label>
+                        <input id="input_room_id" type="text" name="JoinRoom.RoomId" required class="form-control form-control-modern" value="@ViewBag.RoomId" placeholder="Enter room ID"/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-white">Password (Optional)</label>
+                        <input type="password" name="JoinRoom.SecurityCode" class="form-control form-control-modern" placeholder="Enter password if required" />
+                    </div>
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-modern-primary" onclick="homeFormSubmit('form_join_room');">
+                        <i class="fas fa-sign-in-alt me-2"></i>Join Room
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="min-vh-100 d-flex align-items-center justify-content-center animated-bg">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 col-lg-6">
+                <div class="card-modern particle-glow p-4 text-center">
+                    <div class="mb-4">
+                        <img class="img-fluid mb-3" src="~/asset/image/logo.png" alt="TalkFlow Logo" style="max-height: 80px;">
+                        <h2 class="mb-3" style="background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                            Start Video Chat
+                        </h2>
+                        <p class="text-muted">Create a new room or join an existing one</p>
+                    </div>
+                    
+                    <form id="homepage_form" method="post" asp-action="CreateRoom" asp-controller="Home">
+                        <div class="mb-4">
+                            <label class="form-label text-white text-start d-block">Display Name</label>
+                            <input id="input_display_name" required placeholder="Enter your display name" type="text" 
+                                   name="CreateRoom.DisplayName" class="form-control form-control-modern" autocomplete="off">
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button id="btn_create_room" type="button" class="btn btn-modern-primary btn-lg" onclick="homeFormSubmit('homepage_form');">
+                                <i class="fas fa-plus me-2"></i>Create New Room
+                            </button>
+                            <button id="btn_join_room" type="button" class="btn btn-modern-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#ModalJoinRoom">
+                                <i class="fas fa-door-open me-2"></i>Join Existing Room
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section script {
+    <script src="~/js/home_friendhub.js" asp-append-version="true"></script>
+}
+
+
+
