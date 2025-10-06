@@ -1,0 +1,224 @@
+/* ========================================
+   TALKFLOW MODERN COLORS & BACKGROUNDS
+   ======================================== */
+
+/* Import modern font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Modern CSS Variables */
+:root {
+    /* Modern Color Palette */
+    --primary-color: #6366f1;
+    --primary-light: #818cf8; 
+    --secondary-color: #06b6d4;
+    --accent-color: #f59e0b;
+    
+    /* Background Colors */
+    --bg-dark: #0f172a;
+    --bg-medium: #1e293b;
+    --bg-light: #334155;
+    --bg-glass: rgba(15, 23, 42, 0.8);
+    
+    /* Text Colors */
+    --text-white: #f8fafc;
+    --text-gray: #cbd5e1;
+    --text-muted: #64748b;
+}
+
+/* Base body styling with modern gradient background */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, 
+        var(--bg-dark) 0%, 
+        var(--bg-medium) 50%, 
+        var(--bg-light) 100%);
+    
+    /* Add floating particles effect */
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(6, 182, 212, 0.1) 0%, transparent 50%);
+    
+    color: var(--text-white);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Floating particles animation */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    background-image: 
+        radial-gradient(2px 2px at 20px 30px, rgba(99, 102, 241, 0.4), transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(6, 182, 212, 0.4), transparent),
+        radial-gradient(1px 1px at 90px 40px, rgba(245, 158, 11, 0.4), transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(99, 102, 241, 0.3), transparent),
+        radial-gradient(2px 2px at 160px 30px, rgba(6, 182, 212, 0.3), transparent);
+    background-repeat: repeat;
+    background-size: 200px 100px;
+    animation: particlesFloat 20s linear infinite;
+}
+
+@keyframes particlesFloat {
+    0% { transform: translateY(0px) rotate(0deg); }
+    100% { transform: translateY(-100vh) rotate(360deg); }
+}
+
+/* Glass morphism effect utility class */
+.glass-effect {
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 12px;
+}
+
+/* Modern button styling */
+.btn-modern-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-modern-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+    color: white;
+}
+
+.btn-modern-secondary {
+    background: linear-gradient(135deg, var(--secondary-color), rgba(6, 182, 212, 0.8));
+    border: none;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-modern-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(6, 182, 212, 0.3);
+    color: white;
+}
+
+/* Modern card styling */
+.card-modern {
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Animated background for special sections */
+.animated-bg {
+    background: linear-gradient(135deg, 
+        var(--bg-dark) 0%, 
+        var(--bg-medium) 30%,
+        var(--bg-light) 60%,
+        var(--bg-dark) 100%);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Input modern styling */
+.form-control-modern {
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 8px;
+    color: var(--text-white);
+    backdrop-filter: blur(10px);
+}
+
+.form-control-modern:focus {
+    background: rgba(30, 41, 59, 0.9);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    color: var(--text-white);
+}
+
+.form-control-modern::placeholder {
+    color: var(--text-muted);
+}
+
+/* Additional particle effects */
+.particle-glow {
+    position: relative;
+}
+
+.particle-glow::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 50% 50%, 
+        rgba(99, 102, 241, 0.1) 0%, 
+        transparent 70%);
+    pointer-events: none;
+    animation: glowPulse 4s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+/* Enhance glass effects with particles */
+.glass-effect:hover {
+    background: rgba(15, 23, 42, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Animated border for special elements */
+.animated-border {
+    position: relative;
+    background: var(--bg-glass);
+    border-radius: 12px;
+    padding: 2px;
+}
+
+.animated-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 12px;
+    background: linear-gradient(45deg, 
+        var(--primary-color), 
+        var(--secondary-color), 
+        var(--accent-color),
+        var(--primary-color));
+    background-size: 200% 200%;
+    animation: borderGlow 3s linear infinite;
+    z-index: -1;
+}
+
+@keyframes borderGlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}

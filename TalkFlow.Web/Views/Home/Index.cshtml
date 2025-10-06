@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "TalkFlow - Connect & Chat";
+}
+
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center animated-bg">
+    <div class="col-md-6 col-lg-4">
+        <div class="card-modern particle-glow p-4 text-center">
+            <div class="mb-4">
+                <h1 class="h2 mb-3" style="background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    TalkFlow
+                </h1>
+                <p class="text-muted mb-0">Choose how you want to connect</p>
+            </div>
+            
+            <div class="d-grid gap-3">
+                <a href="@Url.Action("FriendHub", "Home")" class="btn btn-modern-primary btn-lg">
+                    <i class="fas fa-users me-2"></i>
+                    Chat with Friends
+                </a>
+                
+                <a href="@Url.Action("Index", "Stranger")" class="btn btn-modern-secondary btn-lg">
+                    <i class="fas fa-user-secret me-2"></i>
+                    Meet New People
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section script {
+    <script type="text/javascript">
+        $(window).on('load', function () {
+            $('#HomeModal').modal('show');
+        });
+    </script>
+}
