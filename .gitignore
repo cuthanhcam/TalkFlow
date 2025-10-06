@@ -149,3 +149,5 @@ _NCrunch*/
 *.meta
 *.cache
 global.json
+
+webrtc-config.js
