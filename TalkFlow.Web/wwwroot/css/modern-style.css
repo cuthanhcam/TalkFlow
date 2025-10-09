@@ -408,3 +408,48 @@ a:focus-visible {
     outline: 2px solid var(--primary-color);
     outline-offset: 2px;
 }
+
+/* ========================================
+   VALIDATION ERROR STYLES
+   ======================================== */
+
+/* Modern validation messages */
+.field-validation-error {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: #ef4444;
+    font-weight: 500;
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+.validation-summary-errors {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.validation-summary-errors ul {
+    margin: 0;
+    padding-left: 1.25rem;
+    color: #ef4444;
+}
+
+.validation-summary-errors li {
+    margin: 0.25rem 0;
+}
+
+.validation-summary-valid {
+    display: none;
+}
