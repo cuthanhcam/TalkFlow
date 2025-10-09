@@ -38,25 +38,28 @@ $(document).ready(function () {
 async function getPermission() { 
     await navigator.mediaDevices.getUserMedia({ audio: true, video: true }).then(stream => {
         streamMedia = stream;
+        stream.getTracks().forEach(track => track.stop());
     }).catch(() => {
         streamMedia = null;
     });
 }
 
 async function checkPermission(id) {
-
+    showLoading('Checking camera and microphone permissions...');
     await getPermission();
+    hideLoading();
 
     if (streamMedia) {
         await homeFormSubmit(id);
     }
     else {
-        alert("Please allow access to your camera and microphone to continue!");
+        CallToast("Please allow access to your camera and microphone to continue!", "error");
     }
 }
 
 async function homeFormSubmit(id) {
     if (streamMedia) {
+        showLoading('Creating room...');
         let form = document.getElementById(id);
         form.submit();
     }

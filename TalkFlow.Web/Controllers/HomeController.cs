@@ -38,14 +38,10 @@ namespace TalkFlow.Controllers
 
         public async Task<IActionResult> CreateRoom(RoomViewModel obj)
         {
-            /*if (ModelState.IsValid)
-            {
-                */
             using (var client = _httpClientFactory.CreateClient("API"))
             {
                 var model = obj.CreateRoom;
-                model.RoomName = "test123";
-                // ✅ Updated to use RESTful endpoint
+                model.RoomName = "TalkFlow Room";
                 var response = await client.PostAsJsonAsync("/api/v1/rooms", model);
                 if (response.IsSuccessStatusCode)
                 {
@@ -59,7 +55,7 @@ namespace TalkFlow.Controllers
                     }
                 }
             }
-            /*}*/
+            
             return RedirectToAction("FriendHub");
         }
 
@@ -68,7 +64,6 @@ namespace TalkFlow.Controllers
             using (var client = _httpClientFactory.CreateClient("API"))
             {
                 var model = obj.JoinRoom;
-                // ✅ Updated to use RESTful endpoint with roomId from model
                 var response = await client.PostAsJsonAsync($"/api/v1/rooms/{model.RoomId}/join", model);
                 if (response.IsSuccessStatusCode)
                 {

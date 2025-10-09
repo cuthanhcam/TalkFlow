@@ -77,8 +77,7 @@ namespace TalkFlow.Controllers
             using (var client = _httpClientFactory.CreateClient("API"))
             {
                 var model = obj;
-                model.RoomName = "test123";
-                // ✅ Updated to use RESTful endpoint
+                model.RoomName = "Stranger Chat";
                 var response = await client.PostAsJsonAsync("/api/v1/strangers", model);
                 if (response.IsSuccessStatusCode)
                 {
@@ -115,7 +114,6 @@ namespace TalkFlow.Controllers
             using (var client = _httpClientFactory.CreateClient("API"))
             {
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("token"));
-                // ✅ Updated to use RESTful endpoint with roomId
                 var response = await client.PostAsJsonAsync($"/api/v1/strangers/{obj.RoomId}/join", obj);
                 if (response.IsSuccessStatusCode)
                 {
