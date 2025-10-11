@@ -11,44 +11,58 @@
           rel="stylesheet">
 }
 
-<div class="min-vh-100 d-flex align-items-center justify-content-center flex-column w-100">
-    <div style="max-width:550px;text-align:center;">
-        <img class="img-fluid" id="homepage_logo" src="~/asset/image/logo.png" alt="logo" style="margin: 1rem 0rem 1rem 0rem;">
-        <form id="stranger_index_form" style="width:95%; display:inline-block; margin-left:auto; margin-right:auto;" method="post" action="@Url.Action("CallAddStranger", "Stranger")">
-            <div class="m-auto" style="max-width:550px;">
-            </div>
-            <div style="max-width:550px;">
+<div class="min-vh-100 d-flex align-items-center justify-content-center flex-column w-100 animated-bg">
+    <div class="card-modern particle-glow p-5 text-center" style="max-width: 600px; width: 95%; animation: fadeInUp 0.6s ease-out;">
+        <div class="mb-4" style="animation: fadeInUp 0.6s ease-out 0.2s both;">
+            <img class="img-fluid" id="homepage_logo" src="~/asset/image/logo.png" alt="logo" style="max-height: 70px; margin-bottom: 1.5rem;">
+            <h2 class="mb-3" style="background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700;">
+                Set Your Preferences
+            </h2>
+            <p class="text-muted mb-4">Let us know who you'd like to meet</p>
+        </div>
+        <form id="stranger_index_form" style="width:100%; animation: fadeInUp 0.6s ease-out 0.4s both;" method="post" action="@Url.Action("CallAddStranger", "Stranger")">
+            <div class="mb-3">
+                <label class="form-label text-white text-start d-block mb-2" style="font-weight: 500;">
+                    <i class="fas fa-user-friends me-2"></i>I want to find
+                </label>
                 <select class="select-t" id="select_gender" name="StrangerFilter.FindGender[]">
-                    <option selected>You want to find</option>
+                    <option selected>Select gender preference</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
-                    <option value="Gay">Gay</option>
-                    <option value="Lesbian">Lesbian</option>
-                    <option value="Binary">Binary</option>
+                    <option value="Others">Others</option>
                     <option value="All">Any Gender</option>
                 </select>
             </div>
-            <div class="m-auto d-flex gap-2 mb-2" style="max-width:550px;">
+            
+            <div class="mb-3">
+                <label class="form-label text-white text-start d-block mb-2" style="font-weight: 500;">
+                    <i class="fas fa-birthday-cake me-2"></i>Age range
+                </label>
                 <select class="select-t" id="select_age" name="StrangerFilter.MinAge">
-                    <option selected>Whose age is</option>
+                    <option selected>Select age preference</option>
                     <option value="1">From 15 to under 18</option>
                     <option value="2">From 18 to under 24</option>
                     <option value="3">From 24 to under 30</option>
                     <option value="4">Above 30</option>
                 </select>
-                @*<select class="select-t" id="select_country" name="StrangerFilter.FindRegion[]">
-                <option selected>And come from</option>
-                </select>*@
             </div>
-            <div style="width:100%;" class="mb-3">
-                <select id="select_country" name="StrangerFilter.FindRegion[]" placeholder="And come from" multiple>
+            
+            <div class="mb-4">
+                <label class="form-label text-white text-start d-block mb-2" style="font-weight: 500;">
+                    <i class="fas fa-globe-americas me-2"></i>Countries (optional)
+                </label>
+                <select id="select_country" name="StrangerFilter.FindRegion[]" placeholder="Select countries" multiple>
                 </select>
             </div>
 
-            <a class="custom-btn me-2" style="width: 16rem;" href="#" onclick="submitForm()">
-                Let's Find Out
-                <span></span>
-            </a>
+            <div class="d-grid">
+                <button type="button" class="btn btn-modern-primary btn-lg" onclick="submitForm()" style="position: relative; overflow: hidden;">
+                    <span style="position: relative; z-index: 1;">
+                        <i class="fas fa-search me-2"></i>Start Matching
+                    </span>
+                    <span style="position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transform: translateX(-100%); animation: shimmer 2s infinite;"></span>
+                </button>
+            </div>
         </form>
     </div>
 </div>

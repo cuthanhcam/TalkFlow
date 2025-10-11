@@ -12,27 +12,44 @@
           rel="stylesheet">
 }
 
-<div class="min-vh-100 d-flex align-items-center justify-content-center flex-column w-100">
-    <div class="d-flex flex-column justify-content-center align-items-center text-center p-4 col-10">
-        <form class="d-flex flex-column w-50 justify-content-center align-items-center">
-            <div>
-                <img id="homepage_logo" src="../logo.png" alt="logo">
+<div class="min-vh-100 d-flex align-items-center justify-content-center flex-column w-100 animated-bg">
+    <div class="card-modern particle-glow p-5 text-center" style="max-width: 500px; width: 95%; animation: fadeInUp 0.6s ease-out;">
+        <div class="mb-4" style="animation: fadeInUp 0.6s ease-out 0.2s both;">
+            <img id="homepage_logo" src="~/asset/image/logo.png" alt="TalkFlow Logo" style="max-height: 70px; margin-bottom: 1.5rem;">
+            <h2 class="mb-3" style="background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700;">
+                Welcome to TalkFlow
+            </h2>
+            <p class="text-muted mb-4">Join your room and start connecting</p>
+        </div>
+        
+        <form class="w-100" style="animation: fadeInUp 0.6s ease-out 0.4s both;">
+            <div class="mb-3">
+                <label class="form-label text-white text-start d-block mb-2" style="font-weight: 500;">
+                    <i class="fas fa-user me-2"></i>User Name
+                </label>
+                <input id="input-room-mate-id" class="form-control form-control-modern" type="text" placeholder="e.g., John Doe" style="font-size: 1rem; padding: 0.875rem 1rem;">
             </div>
-            <h1 class="mb-4">Welcome to TalkFlow</h1>
-            <div class="input-group border rounded-end mb-3 div-friendhub-custom">
-                <input id="input-room-mate-id" class="form-control border-0 col-10 input-custom" type="text" placeholder="User Name">               
-            </div>
-            <div class="input-group border rounded-end mt-3 div-friendhub-custom">
-                <input id="input-pass-mate-room" class="form-control border-0 col-10 input-custom" type="password" placeholder="Password">
-                <span class="input-group-append col-1 d-flex justify-content-end input-custom">
-                    <button id="btn-icon-visibility" class="bg-white border-start-0 border rounded-end py-2 pe-0 ps-0 d-flex justify-content-center btn-custom" type="button">
-                        <span class="material-icons" id="icon_pass_off" onclick="changeIcon()">
-                            visibility_off
-                        </span>
+            
+            <div class="mb-4">
+                <label class="form-label text-white text-start d-block mb-2" style="font-weight: 500;">
+                    <i class="fas fa-lock me-2"></i>Password
+                </label>
+                <div class="position-relative">
+                    <input id="input-pass-mate-room" class="form-control form-control-modern" type="password" placeholder="Enter room password" style="font-size: 1rem; padding: 0.875rem 1rem; padding-right: 3rem;">
+                    <button id="btn-icon-visibility" class="btn position-absolute top-50 end-0 translate-middle-y" type="button" onclick="changeIcon()" style="background: transparent; border: none; color: #94a3b8;">
+                        <i class="material-icons" id="icon_pass_off">visibility_off</i>
                     </button>
-                </span>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary col-10 m-2" style="position: center">Join hostname's room</button>
+            
+            <div class="d-grid">
+                <button type="submit" class="btn btn-modern-primary btn-lg" style="position: relative; overflow: hidden;">
+                    <span style="position: relative; z-index: 1;">
+                        <i class="fas fa-sign-in-alt me-2"></i>Join Room
+                    </span>
+                    <span style="position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transform: translateX(-100%); animation: shimmer 2s infinite;"></span>
+                </button>
+            </div>
         </form>
     </div>
 </div>

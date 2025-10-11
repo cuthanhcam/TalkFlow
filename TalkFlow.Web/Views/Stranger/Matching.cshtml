@@ -58,17 +58,22 @@
     </div>
 </div>
 
-<div class="min-vh-100 d-flex align-items-center justify-content-center flex-column w-100">
-    <div class="d-flex flex-column justify-content-center align-items-center text-center p-4 col-10">
-        <div style="max-width:550px;">
-            <div class="loader"></div>
+<div class="min-vh-100 d-flex align-items-center justify-content-center flex-column w-100 animated-bg">
+    <div class="card-modern particle-glow p-5 d-flex flex-column justify-content-center align-items-center text-center" style="max-width:550px; width: 95%; animation: fadeInUp 0.6s ease-out;">
+        <div class="loader mb-4" style="animation: fadeInUp 0.6s ease-out 0.2s both;"></div>
+        <div style="animation: fadeInUp 0.6s ease-out 0.4s both;">
+            <h3 class="mb-3" style="background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; font-size: 1.5rem;">
+                <i class="fas fa-search me-2"></i>Searching for matches...
+            </h3>
+            <p class="text-muted mb-4">Please wait while we find someone who matches your preferences</p>
         </div>
-        <text class="mb-4" style="font-size: 32px; text-transform: uppercase; letter-spacing: 0.25rem; color: white;  margin:2rem 0rem 1rem 0rem">No one matches to your finder settings</text>
-        <div id="div_matching" class="w-100">
-            <a class="custom-btn" onclick="location.href='@Url.Action("Waiting","Stranger")'" style="width: 20rem; font-size: 14px">
-                Keep on waiting
-                <span></span>
-            </a>
+        <div id="div_matching" class="w-100 d-grid gap-2" style="animation: fadeInUp 0.6s ease-out 0.6s both;">
+            <button type="button" class="btn btn-modern-secondary btn-lg" onclick="location.href='@Url.Action("Waiting","Stranger")'">
+                <i class="fas fa-clock me-2"></i>Keep Waiting
+            </button>
+            <button type="button" class="btn btn-outline-light btn-lg" onclick="location.href='@Url.Action("Index","Stranger")'">
+                <i class="fas fa-arrow-left me-2"></i>Go Back
+            </button>
         </div>
     </div>
 </div>

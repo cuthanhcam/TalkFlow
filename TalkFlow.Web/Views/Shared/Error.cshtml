@@ -3,23 +3,81 @@
     ViewData["Title"] = "Error";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<div class="min-vh-100 d-flex align-items-center justify-content-center flex-column w-100 animated-bg">
+    <div class="card-modern particle-glow p-5 text-center" style="max-width: 700px; width: 95%; animation: fadeInUp 0.6s ease-out;">
+        <div class="mb-4" style="animation: fadeInUp 0.6s ease-out 0.2s both;">
+            <div class="error-icon mb-4">
+                <i class="fas fa-exclamation-triangle" style="font-size: 5rem; color: #f59e0b; animation: pulse 2s ease-in-out infinite;"></i>
+            </div>
+            <h1 class="mb-3" style="background: linear-gradient(135deg, #ef4444, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; font-size: 2.5rem;">
+                Oops! Something went wrong
+            </h1>
+            <p class="text-muted mb-4" style="font-size: 1.125rem;">
+                An error occurred while processing your request
+            </p>
+        </div>
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+        @if (Model.ShowRequestId)
+        {
+            <div class="mb-4 p-3" style="background: rgba(239, 68, 68, 0.1); border-radius: 12px; border: 1px solid rgba(239, 68, 68, 0.3); animation: fadeInUp 0.6s ease-out 0.4s both;">
+                <p class="text-white-50 mb-1">
+                    <i class="fas fa-fingerprint me-2"></i><strong>Request ID:</strong>
+                </p>
+                <code style="color: #fbbf24; font-size: 0.875rem;">@Model.RequestId</code>
+            </div>
+        }
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+        <div class="text-start mb-4" style="animation: fadeInUp 0.6s ease-out 0.6s both;">
+            <div class="alert" style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; color: var(--text-white);">
+                <h5 class="mb-3" style="color: var(--primary-light);">
+                    <i class="fas fa-info-circle me-2"></i>What can you do?
+                </h5>
+                <ul class="mb-0" style="line-height: 2;">
+                    <li>Try refreshing the page</li>
+                    <li>Go back to the home page and try again</li>
+                    <li>Clear your browser cache and cookies</li>
+                    <li>Contact support if the problem persists</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="d-grid gap-3" style="animation: fadeInUp 0.6s ease-out 0.8s both;">
+            <a href="@Url.Action("Index", "Home")" class="btn btn-modern-primary btn-lg">
+                <i class="fas fa-home me-2"></i>Back to Home
+            </a>
+            <button onclick="window.history.back()" class="btn btn-modern-secondary btn-lg">
+                <i class="fas fa-arrow-left me-2"></i>Go Back
+            </button>
+        </div>
+
+        @if (ViewContext.HttpContext.Request.Host.Host.Contains("localhost") || 
+             ViewContext.HttpContext.Request.Host.Host.Contains("127.0.0.1"))
+        {
+            <div class="mt-5 p-4 text-start" style="background: rgba(245, 158, 11, 0.1); border-radius: 12px; border: 1px solid rgba(245, 158, 11, 0.3); animation: fadeInUp 0.6s ease-out 1s both;">
+                <h6 class="mb-3" style="color: var(--accent-color);">
+                    <i class="fas fa-code me-2"></i>Development Mode
+                </h6>
+                <p class="text-white-50 mb-2" style="font-size: 0.875rem;">
+                    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
+                </p>
+                <p class="text-white-50 mb-0" style="font-size: 0.875rem;">
+                    <strong>⚠️ Warning:</strong> The Development environment shouldn't be enabled for deployed applications.
+                    It can result in displaying sensitive information from exceptions to end users.
+                </p>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    @@keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+            transform: scale(1);
+        }
+        50% {
+            opacity: 0.7;
+            transform: scale(1.1);
+        }
+    }
+</style>

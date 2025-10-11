@@ -319,10 +319,31 @@ function updateTimer() {
     document.getElementById('time_meeting').textContent = formattedTime;
 }
 function setCopyState() {
-    navigator.clipboard.writeText(window.location.href);
+    const linkInput = document.getElementById("link_meeting");
+    navigator.clipboard.writeText(linkInput ? linkInput.value : window.location.href);
     var icon = document.getElementById("icon_copy_url");
     icon.innerHTML = "done";
-    CallToast("Room ID is copied to clipboard.");
+    CallToast("Room link copied to clipboard!", "success");
+    
+    // Reset after 2 seconds
+    setTimeout(() => {
+        icon.innerHTML = "content_copy";
+    }, 2000);
+}
+
+function togglePasswordVisibility() {
+    const input = document.getElementById("input_pass_config");
+    const icon = document.getElementById("icon_pass_visibility");
+    
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+    } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+    }
 }
 
 function idClick() {
@@ -1274,6 +1295,13 @@ function changeRoomSercurityCode() {
         RoomName: ObjClient.Room.roomName,
         SecurityCode: input.value
     };
+    
+    // Close modal immediately
+    const modal = bootstrap.Modal.getInstance(document.getElementById('ModalSecurityConfig'));
+    if (modal) {
+        modal.hide();
+    }
+    
     fetch('/Room/ChangeRoomSercurityCode', {
         method: 'POST',
         headers: {
@@ -1290,14 +1318,13 @@ function changeRoomSercurityCode() {
     .then(data => {
         // Process the response data
         console.log(data);
+        // Show success toast
+        CallToast("Security settings saved successfully!", "success");
     })
     .catch(error => {
         console.error('Fetch error:', error);
-        return;
+        CallToast("Failed to save security settings. Please try again.", "error");
     });
-    let icon_config = document.getElementById("icon_close_config");
-    icon_config.click();
-    CallToast("Change room security code successfully");
 }
 
 function mediaHasChatFunc(x) {

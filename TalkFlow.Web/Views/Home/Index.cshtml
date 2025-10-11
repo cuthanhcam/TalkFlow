@@ -2,36 +2,119 @@
     ViewData["Title"] = "TalkFlow - Connect & Chat";
 }
 
-<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center animated-bg">
-    <div class="col-md-6 col-lg-4">
-        <div class="card-modern particle-glow p-4 text-center">
-            <div class="mb-4">
-                <h1 class="h2 mb-3" style="background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
-                    TalkFlow
-                </h1>
-                <p class="text-muted mb-0">Choose how you want to connect</p>
-            </div>
-            
-            <div class="d-grid gap-3">
-                <a href="@Url.Action("FriendHub", "Home")" class="btn btn-modern-primary btn-lg">
-                    <i class="fas fa-users me-2"></i>
-                    Chat with Friends
-                </a>
+@section customHead {
+    <link rel="stylesheet" href="~/css/home_index.css" asp-append-version="true" />
+}
+
+<div class="hero-section">
+    <div class="hero-background">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <div class="container">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6 hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-video me-2"></i>
+                    <span>Free Video Chat Platform</span>
+                </div>
                 
-                <a href="@Url.Action("Index", "Stranger")" class="btn btn-modern-secondary btn-lg">
-                    <i class="fas fa-user-secret me-2"></i>
-                    Meet New People
-                </a>
+                <h1 class="hero-title">
+                    Connect & Chat
+                    <span class="gradient-text">Anywhere, Anytime</span>
+                </h1>
+                
+                <p class="hero-description">
+                    Experience seamless video conversations with friends or meet new people from around the world. 
+                    High-quality video, secure connections, and intuitive interface.
+                </p>
+
+                <div class="hero-buttons">
+                    <a href="@Url.Action("FriendHub", "Home")" class="btn-hero btn-hero-primary">
+                        <span class="btn-content">
+                            <i class="fas fa-users me-2"></i>
+                            <span>Chat with Friends</span>
+                        </span>
+                        <span class="btn-shimmer"></span>
+                    </a>
+                    
+                    <a href="@Url.Action("Index", "Stranger")" class="btn-hero btn-hero-secondary">
+                        <span class="btn-content">
+                            <i class="fas fa-globe me-2"></i>
+                            <span>Meet New People</span>
+                        </span>
+                        <span class="btn-shimmer"></span>
+                    </a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <div class="stat-content">
+                            <div class="stat-value">100%</div>
+                            <div class="stat-label">Secure</div>
+                        </div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <i class="fas fa-bolt"></i>
+                        <div class="stat-content">
+                            <div class="stat-value">HD</div>
+                            <div class="stat-label">Quality</div>
+                        </div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <i class="fas fa-clock"></i>
+                        <div class="stat-content">
+                            <div class="stat-value">24/7</div>
+                            <div class="stat-label">Available</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="hero-visual">
+                    <div class="visual-card card-1">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="video-preview">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            <div class="card-info">
+                                <div class="pulse-dot"></div>
+                                <span>Live Video</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="visual-card card-2">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="chat-preview">
+                                <i class="fas fa-comments"></i>
+                            </div>
+                            <div class="card-info">
+                                <div class="pulse-dot"></div>
+                                <span>Real-time Chat</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="floating-icon icon-1">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <div class="floating-icon icon-2">
+                        <i class="fas fa-share-screen"></i>
+                    </div>
+                    <div class="floating-icon icon-3">
+                        <i class="fas fa-user-friends"></i>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-
-@section script {
-    <script type="text/javascript">
-        $(window).on('load', function () {
-            $('#HomeModal').modal('show');
-        });
-    </script>
-}

@@ -8,40 +8,77 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
 }
-<div class="min-vh-100 d-flex align-items-center justify-content-center flex-column w-100">
-    <div style="max-width:550px; display:block; text-align:center;">
-        <img class="img-fluid" id="homepage_logo" src="~/asset/image/logo.png" alt="logo" style="margin: 0px 0px 20px 0px">
-        <form id="stranger_index_form" style="width:95%;display:inline-block;margin-left:auto; margin-right:auto;" method="post" action="@Url.Action("FindOut", "Stranger")">
-            <div class="textInputWrapper" style="margin: 0px 0px 20px 0px">
-                <input placeholder="Your display name" required name="DisplayName" type="text" class="textInput">
+<div class="min-vh-100 d-flex align-items-center justify-content-center flex-column w-100 animated-bg">
+    <div class="card-modern particle-glow p-5 text-center" style="max-width:550px; width: 95%; animation: fadeInUp 0.6s ease-out;">
+        <style>
+            @@keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        </style>
+        <div class="mb-4" style="animation: fadeInUp 0.6s ease-out 0.2s both;">
+            <img class="img-fluid" id="homepage_logo" src="~/asset/image/logo.png" alt="logo" style="max-height: 70px; margin-bottom: 1.5rem;">
+            <h2 class="mb-3" style="background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700;">
+                Tell Us About Yourself
+            </h2>
+            <p class="text-muted mb-4">Help us find the perfect match for you</p>
+        </div>
+        <form id="stranger_index_form" style="width:100%; animation: fadeInUp 0.6s ease-out 0.4s both;" method="post" action="@Url.Action("FindOut", "Stranger")" data-validate="true">
+            <div class="mb-3">
+                <label class="form-label text-white text-start d-block mb-2" style="font-weight: 500;">
+                    <i class="fas fa-user me-2"></i>Display Name
+                </label>
+                <input placeholder="Minimum 6 characters" required minlength="6" name="DisplayName" type="text" class="form-control form-control-modern" maxlength="50" style="font-size: 1rem; padding: 0.875rem 1rem;">
+                <div class="invalid-feedback"></div>
             </div>
-            <!-- There are two dropdowns to show multi-menu support -->
 
-
-            <div class="m-auto d-flex gap-2 justify-content-center align-items-center mb-3">
-                <div class="btn-group shadow-0 me-1 " style="width:100%;" aria-label=".form-select-lg example">
-                    <select class="select-t" id="select_gender" name="Gender" required>
-                        <option selected>Choose gender</option>
+            <div class="mb-3 d-flex gap-2">
+                <div style="width: 50%;">
+                    <label class="form-label text-white text-start d-block mb-2" style="font-weight: 500; font-size: 0.875rem;">
+                        <i class="fas fa-venus-mars me-2"></i>Gender
+                    </label>
+                    <select class="select-t form-control form-control-modern" id="select_gender" name="Gender" required style="width: 100%; padding: 0.875rem 1rem;">
+                        <option value="" selected disabled>Gender</option>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                         <option value="Others">Others</option>
                     </select>
+                    <div class="invalid-feedback"></div>
                 </div>
-                <div class="textInputWrapper btn-group shadow-0 ms-1" style="width:100%;" aria-label=".form-select-lg example">
-                    <input placeholder="Your age" class="textInput" type="number" required name="Age" />
+                <div style="width: 50%;">
+                    <label class="form-label text-white text-start d-block mb-2" style="font-weight: 500; font-size: 0.875rem;">
+                        <i class="fas fa-birthday-cake me-2"></i>Age
+                    </label>
+                    <input placeholder="e.g., 25" class="form-control form-control-modern" type="number" required name="Age" min="13" max="100" style="font-size: 1rem; padding: 0.875rem 1rem;" />
+                    <div class="invalid-feedback"></div>
                 </div>
             </div>
 
 
-            <div style="width:100%;" aria-label=".form-select-lg example">
-                <select placeholder="Your country" id="select_country" name="Nationality" required>
+            <div class="mb-4">
+                <label class="form-label text-white text-start d-block mb-2" style="font-weight: 500;">
+                    <i class="fas fa-globe-americas me-2"></i>Country
+                </label>
+                <select id="select_country" name="Nationality" required class="form-control form-control-modern" style="padding: 0.875rem 1rem;">
+                    <option value="" disabled selected>Select your country</option>
                 </select>
+                <div class="invalid-feedback"></div>
             </div>
-            <center onclick="submitForm()">
-                <a class="custom-btn">
-                    NEXT
-                </a>
-            </center>
+            
+            <div class="d-grid">
+                <button type="button" class="btn btn-modern-primary btn-lg" onclick="submitForm()" style="position: relative; overflow: hidden;">
+                    <span style="position: relative; z-index: 1;">
+                        <i class="fas fa-arrow-right me-2"></i>Next
+                    </span>
+                    <span style="position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transform: translateX(-100%); animation: shimmer 2s infinite;"></span>
+                </button>
+            </div>
         </form>
     </div>
 </div>

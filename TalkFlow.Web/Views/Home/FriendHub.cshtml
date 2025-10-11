@@ -15,19 +15,21 @@
                 <h5 class="modal-title text-white">Join Room</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <form id="form_join_room" method="post" autocomplete="off" asp-action="JoinRoom" asp-controller="Home">
+            <form id="form_join_room" method="post" autocomplete="off" asp-action="JoinRoom" asp-controller="Home" data-validate="true">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label text-white">Display Name</label>
-                        <input type="text" name="JoinRoom.DisplayName" required class="form-control form-control-modern" placeholder="Enter your display name" />
+                        <input type="text" name="JoinRoom.DisplayName" required minlength="6" class="form-control form-control-modern" placeholder="Minimum 6 characters" maxlength="50" />
+                        <div class="invalid-feedback"></div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-white">Room ID</label>
-                        <input id="input_room_id" type="text" name="JoinRoom.RoomId" required class="form-control form-control-modern" value="@ViewBag.RoomId" placeholder="Enter room ID"/>
+                        <input id="input_room_id" type="text" name="JoinRoom.RoomId" required class="form-control form-control-modern" value="@ViewBag.RoomId" placeholder="e.g., abc123-def456"/>
+                        <div class="invalid-feedback"></div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-white">Password (Optional)</label>
-                        <input type="password" name="JoinRoom.SecurityCode" class="form-control form-control-modern" placeholder="Enter password if required" />
+                        <input type="password" name="JoinRoom.SecurityCode" class="form-control form-control-modern" placeholder="Leave blank if no password" maxlength="50" />
                     </div>
                 </div>
                 <div class="modal-footer border-0">
@@ -40,32 +42,60 @@
     </div>
 </div>
 
-<div class="min-vh-100 d-flex align-items-center justify-content-center animated-bg">
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center animated-bg">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
-                <div class="card-modern particle-glow p-4 text-center">
+                <div class="card-modern particle-glow p-5 text-center" style="animation: fadeInUp 0.6s ease-out;">
+                    <style>
+                        @@keyframes shimmer {
+                            0% { transform: translateX(-100%); }
+                            100% { transform: translateX(100%); }
+                        }
+                        @@keyframes fadeInUp {
+                            from {
+                                opacity: 0;
+                                transform: translateY(30px);
+                            }
+                            to {
+                                opacity: 1;
+                                transform: translateY(0);
+                            }
+                        }
+                    </style>
                     <div class="mb-4">
-                        <img class="img-fluid mb-3" src="~/asset/image/logo.png" alt="TalkFlow Logo" style="max-height: 80px;">
-                        <h2 class="mb-3" style="background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                        <div class="logo-container mb-4" style="animation: fadeInUp 0.6s ease-out 0.2s both;">
+                            <img class="img-fluid" src="~/asset/image/logo.png" alt="TalkFlow Logo" style="max-height: 70px;">
+                        </div>
+                        <h2 class="mb-3" style="background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700; animation: fadeInUp 0.6s ease-out 0.4s both;">
                             Start Video Chat
                         </h2>
-                        <p class="text-muted">Create a new room or join an existing one</p>
+                        <p class="text-muted" style="animation: fadeInUp 0.6s ease-out 0.6s both;">Create a new room or join an existing one</p>
                     </div>
                     
-                    <form id="homepage_form" method="post" asp-action="CreateRoom" asp-controller="Home">
+                    <form id="homepage_form" method="post" asp-action="CreateRoom" asp-controller="Home" data-validate="true" style="animation: fadeInUp 0.6s ease-out 0.8s both;">
                         <div class="mb-4">
-                            <label class="form-label text-white text-start d-block">Display Name</label>
-                            <input id="input_display_name" required placeholder="Enter your display name" type="text" 
-                                   name="CreateRoom.DisplayName" class="form-control form-control-modern" autocomplete="off">
+                            <label class="form-label text-white text-start d-block mb-2" style="font-weight: 500;">
+                                <i class="fas fa-user me-2"></i>Display Name
+                            </label>
+                            <input id="input_display_name" required minlength="6" placeholder="Minimum 6 characters" type="text" 
+                                   name="CreateRoom.DisplayName" class="form-control form-control-modern" autocomplete="off" maxlength="50" 
+                                   style="font-size: 1rem; padding: 0.875rem 1rem;">
+                            <div class="invalid-feedback"></div>
+                            <div class="form-text text-white-50 mt-1" style="font-size: 0.875rem;">
+                                <i class="fas fa-info-circle me-1"></i>Enter at least 6 characters for your display name
+                            </div>
                         </div>
                         
-                        <div class="d-grid gap-2">
-                            <button id="btn_create_room" type="button" class="btn btn-modern-primary btn-lg" onclick="homeFormSubmit('homepage_form');">
-                                <i class="fas fa-plus me-2"></i>Create New Room
+                        <div class="d-flex flex-column gap-3 w-100">
+                            <button id="btn_create_room" type="button" class="btn btn-modern-primary btn-lg w-100" onclick="homeFormSubmit('homepage_form');" style="position: relative; overflow: hidden;">
+                                <span style="position: relative; z-index: 1; white-space: nowrap;">
+                                    <i class="fas fa-plus-circle me-2"></i>Create New Room
+                                </span>
+                                <span style="position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transform: translateX(-100%); animation: shimmer 2s infinite;"></span>
                             </button>
-                            <button id="btn_join_room" type="button" class="btn btn-modern-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#ModalJoinRoom">
-                                <i class="fas fa-door-open me-2"></i>Join Existing Room
+                            <button id="btn_join_room" type="button" class="btn btn-outline-primary btn-lg w-100" data-bs-toggle="modal" data-bs-target="#ModalJoinRoom" style="border-color: rgba(99, 102, 241, 0.5); color: #818cf8; white-space: nowrap;">
+                                <i class="fas fa-sign-in-alt me-2"></i>Join Existing Room
                             </button>
                         </div>
                     </form>

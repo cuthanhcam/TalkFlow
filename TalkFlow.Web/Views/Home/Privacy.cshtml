@@ -1,6 +1,78 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="min-vh-100 d-flex align-items-center justify-content-center flex-column w-100 animated-bg py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="card-modern particle-glow p-5" style="animation: fadeInUp 0.6s ease-out;">
+                    <div class="text-center mb-5" style="animation: fadeInUp 0.6s ease-out 0.2s both;">
+                        <i class="fas fa-shield-alt mb-3" style="font-size: 3rem; background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;"></i>
+                        <h1 class="mb-3" style="background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 700;">
+                            Privacy Policy
+                        </h1>
+                        <p class="text-muted">Your privacy matters to us</p>
+                    </div>
+
+                    <div style="animation: fadeInUp 0.6s ease-out 0.4s both;">
+                        <div class="mb-4">
+                            <h4 class="mb-3" style="color: var(--primary-light);">
+                                <i class="fas fa-info-circle me-2"></i>Information We Collect
+                            </h4>
+                            <p class="text-white-50">
+                                We collect minimal information necessary to provide our video chat services. This includes your display name, 
+                                connection information, and any preferences you choose to set during your session.
+                            </p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="mb-3" style="color: var(--secondary-color);">
+                                <i class="fas fa-user-shield me-2"></i>How We Use Your Information
+                            </h4>
+                            <p class="text-white-50">
+                                Your information is used solely to facilitate video chat connections and improve our service. 
+                                We do not sell or share your personal information with third parties for marketing purposes.
+                            </p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="mb-3" style="color: var(--accent-color);">
+                                <i class="fas fa-lock me-2"></i>Data Security
+                            </h4>
+                            <p class="text-white-50">
+                                We implement industry-standard security measures to protect your data. All video and audio connections 
+                                are encrypted using WebRTC technology, ensuring your conversations remain private.
+                            </p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="mb-3" style="color: var(--primary-light);">
+                                <i class="fas fa-cookie-bite me-2"></i>Cookies & Tracking
+                            </h4>
+                            <p class="text-white-50">
+                                We use essential cookies to maintain your session and provide core functionality. 
+                                We do not use tracking cookies for advertising purposes.
+                            </p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="mb-3" style="color: var(--secondary-color);">
+                                <i class="fas fa-envelope me-2"></i>Contact Us
+                            </h4>
+                            <p class="text-white-50">
+                                If you have any questions about our privacy policy, please feel free to contact us through our support channels.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-5" style="animation: fadeInUp 0.6s ease-out 0.6s both;">
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-modern-primary">
+                            <i class="fas fa-home me-2"></i>Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
