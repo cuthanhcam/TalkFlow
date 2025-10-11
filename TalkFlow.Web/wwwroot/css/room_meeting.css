@@ -29,10 +29,15 @@ video::-webkit-media-controls-current-time-display {
 }
 
 /* Layout containers */
-.shared_div_container,
-main {
+.shared_div_container {
     height: 100%;
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+    overflow: hidden;
+}
+
+main {
+    height: 100%;
+    background: transparent;
 }
 
 #div_left_meeting,
@@ -83,17 +88,19 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem;
-    background: rgba(15, 23, 42, 0.9);
-    backdrop-filter: blur(20px);
+    padding: 0.75rem 1rem;
+    background: transparent;
     border-top: 1px solid rgba(148, 163, 184, 0.1);
     border-radius: 0 0 16px 16px;
+    min-height: 70px;
 }
 
 #div_title_meeting {
     color: #f8fafc;
     font-weight: 600;
     font-size: 0.95rem;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 #time_meeting {
@@ -166,14 +173,13 @@ main {
 .Btn {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     width: 45px;
     height: 45px;
     border: none;
     border-radius: 50%;
     cursor: pointer;
     position: relative;
-    font-weight: 500;
     overflow: hidden;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
@@ -181,8 +187,6 @@ main {
 }
 
 .Btn:hover {
-    width: 125px;
-    border-radius: 40px;
     box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5);
     transform: translateY(-2px);
 }
@@ -193,7 +197,6 @@ main {
 
 .sign {
     width: 100%;
-    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -208,25 +211,7 @@ main {
 }
 
 .text {
-    position: absolute;
-    right: 0%;
-    width: 0%;
-    opacity: 0;
-    color: white;
-    transition: all 0.3s ease;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.Btn:hover .sign {
-    width: 30%;
-    padding-left: 20px;
-}
-
-.Btn:hover .text {
-    opacity: 1;
-    width: 70%;
-    padding-right: 20px;
+    display: none;
 }
 
 /* Sidebar control */
@@ -486,10 +471,6 @@ main {
     .Btn {
         width: 38px;
         height: 38px;
-    }
-
-    .Btn:hover {
-        width: 110px;
     }
 
     #div_footer_left_meeting {

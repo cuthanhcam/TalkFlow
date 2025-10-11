@@ -69,9 +69,7 @@ namespace TalkFlow.Controllers
                 obj.StrangerFilter.FindGender.Remove("All");
                 obj.StrangerFilter.FindGender.Add("Male");
                 obj.StrangerFilter.FindGender.Add("Female");
-                obj.StrangerFilter.FindGender.Add("Gay");
-                obj.StrangerFilter.FindGender.Add("Lesbian");
-                obj.StrangerFilter.FindGender.Add("Binary");
+                obj.StrangerFilter.FindGender.Add("Others");
             }
 
             using (var client = _httpClientFactory.CreateClient("API"))

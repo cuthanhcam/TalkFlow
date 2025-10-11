@@ -46,6 +46,21 @@ function validateField(field) {
         errorMessage = 'This field is required';
     }
 
+    if (field.type === 'text' && field.value.trim()) {
+        const minLength = field.getAttribute('minlength');
+        const maxLength = field.getAttribute('maxlength');
+        const length = field.value.trim().length;
+
+        if (minLength && length < parseInt(minLength)) {
+            isValid = false;
+            errorMessage = `Minimum ${minLength} characters required`;
+        }
+        if (maxLength && length > parseInt(maxLength)) {
+            isValid = false;
+            errorMessage = `Maximum ${maxLength} characters allowed`;
+        }
+    }
+
     if (field.type === 'number' && field.value) {
         const min = field.getAttribute('min');
         const max = field.getAttribute('max');
@@ -58,14 +73,6 @@ function validateField(field) {
         if (max && value > parseInt(max)) {
             isValid = false;
             errorMessage = `Maximum value is ${max}`;
-        }
-    }
-
-    if (field.type === 'text' && field.value) {
-        const maxLength = field.getAttribute('maxlength');
-        if (maxLength && field.value.length > parseInt(maxLength)) {
-            isValid = false;
-            errorMessage = `Maximum length is ${maxLength} characters`;
         }
     }
 
@@ -85,12 +92,16 @@ function validateField(field) {
 function showErrorMessage(field, message) {
     removeErrorMessage(field);
     
-    const errorDiv = document.createElement('div');
-    errorDiv.className = 'invalid-feedback d-block';
-    errorDiv.textContent = message;
-    errorDiv.setAttribute('data-error-for', field.id || field.name);
+    let errorDiv = field.parentNode.querySelector('.invalid-feedback');
+    if (!errorDiv) {
+        errorDiv = document.createElement('div');
+        errorDiv.className = 'invalid-feedback';
+        field.parentNode.appendChild(errorDiv);
+    }
     
-    field.parentNode.appendChild(errorDiv);
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+    errorDiv.setAttribute('data-error-for', field.id || field.name);
 }
 
 function removeErrorMessage(field) {

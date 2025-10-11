@@ -19,11 +19,13 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label text-white">Display Name</label>
-                        <input type="text" name="JoinRoom.DisplayName" required class="form-control form-control-modern" placeholder="e.g., John Doe" maxlength="50" />
+                        <input type="text" name="JoinRoom.DisplayName" required minlength="6" class="form-control form-control-modern" placeholder="Minimum 6 characters" maxlength="50" />
+                        <div class="invalid-feedback"></div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-white">Room ID</label>
                         <input id="input_room_id" type="text" name="JoinRoom.RoomId" required class="form-control form-control-modern" value="@ViewBag.RoomId" placeholder="e.g., abc123-def456"/>
+                        <div class="invalid-feedback"></div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label text-white">Password (Optional)</label>
@@ -76,19 +78,23 @@
                             <label class="form-label text-white text-start d-block mb-2" style="font-weight: 500;">
                                 <i class="fas fa-user me-2"></i>Display Name
                             </label>
-                            <input id="input_display_name" required placeholder="e.g., John Doe" type="text" 
+                            <input id="input_display_name" required minlength="6" placeholder="Minimum 6 characters" type="text" 
                                    name="CreateRoom.DisplayName" class="form-control form-control-modern" autocomplete="off" maxlength="50" 
                                    style="font-size: 1rem; padding: 0.875rem 1rem;">
+                            <div class="invalid-feedback"></div>
+                            <div class="form-text text-white-50 mt-1" style="font-size: 0.875rem;">
+                                <i class="fas fa-info-circle me-1"></i>Enter at least 6 characters for your display name
+                            </div>
                         </div>
                         
-                        <div class="d-grid gap-3">
-                            <button id="btn_create_room" type="button" class="btn btn-modern-primary btn-lg" onclick="homeFormSubmit('homepage_form');" style="position: relative; overflow: hidden;">
-                                <span style="position: relative; z-index: 1;">
+                        <div class="d-flex flex-column gap-3 w-100">
+                            <button id="btn_create_room" type="button" class="btn btn-modern-primary btn-lg w-100" onclick="homeFormSubmit('homepage_form');" style="position: relative; overflow: hidden;">
+                                <span style="position: relative; z-index: 1; white-space: nowrap;">
                                     <i class="fas fa-plus-circle me-2"></i>Create New Room
                                 </span>
                                 <span style="position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transform: translateX(-100%); animation: shimmer 2s infinite;"></span>
                             </button>
-                            <button id="btn_join_room" type="button" class="btn btn-modern-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#ModalJoinRoom">
+                            <button id="btn_join_room" type="button" class="btn btn-outline-primary btn-lg w-100" data-bs-toggle="modal" data-bs-target="#ModalJoinRoom" style="border-color: rgba(99, 102, 241, 0.5); color: #818cf8; white-space: nowrap;">
                                 <i class="fas fa-sign-in-alt me-2"></i>Join Existing Room
                             </button>
                         </div>

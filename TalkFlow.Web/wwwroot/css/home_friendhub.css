@@ -89,6 +89,36 @@
     box-shadow: 0 10px 30px rgba(6, 182, 212, 0.3);
 }
 
+.btn-outline-primary {
+    background: transparent;
+    border: 2px solid rgba(99, 102, 241, 0.5);
+    color: #818cf8;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background: rgba(99, 102, 241, 0.1);
+    border-color: rgba(99, 102, 241, 0.8);
+    color: #818cf8;
+    box-shadow: 0 5px 20px rgba(99, 102, 241, 0.3);
+    transform: translateY(-2px);
+}
+
+.btn-outline-danger {
+    background: transparent;
+    border: 2px solid rgba(239, 68, 68, 0.5);
+    color: #ef4444;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.8);
+    color: #ef4444;
+    box-shadow: 0 5px 20px rgba(239, 68, 68, 0.3);
+    transform: translateY(-2px);
+}
+
 /* Form label modern styling */
 .form-label {
     display: flex;
@@ -228,4 +258,27 @@
     to {
         transform: rotate(360deg);
     }
+}
+
+/* Đồng bộ hóa kích thước cho các nút trong Start Video Chat */
+.btn-room-action {
+    width: 180px; /* Tăng chiều rộng để phù hợp với nội dung dài nhất */
+    height: 50px; /* Đặt chiều cao cố định */
+    padding: 0.5rem 1rem; /* Đảm bảo padding đồng đều */
+    font-size: 1rem; /* Đảm bảo kích thước chữ đồng đều */
+    display: block; /* Đặt mỗi nút trên một dòng */
+    text-align: center;
+    transition: all 0.3s ease; /* Giữ hiệu ứng hover */
+    border: 2px solid rgba(99, 102, 241, 0.5); /* Thêm viền để nhất quán */
+    background-color: rgba(99, 102, 241, 0.8); /* Màu nền */
+    color: white; /* Màu chữ */
+    border-radius: 8px; /* Bo góc */
+    margin: 10px auto; /* Khoảng cách giữa các nút và căn giữa */
+}
+
+/* Hiệu ứng hover */
+.btn-room-action:hover {
+    background-color: rgba(99, 102, 241, 1); /* Tăng độ đậm khi hover */
+    transform: translateY(-2px); /* Hiệu ứng nâng lên */
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3); /* Bóng đổ */
 }

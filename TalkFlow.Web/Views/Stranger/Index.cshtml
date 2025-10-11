@@ -34,7 +34,8 @@
                 <label class="form-label text-white text-start d-block mb-2" style="font-weight: 500;">
                     <i class="fas fa-user me-2"></i>Display Name
                 </label>
-                <input placeholder="e.g., Anonymous User" required name="DisplayName" type="text" class="form-control form-control-modern" maxlength="50" style="font-size: 1rem; padding: 0.875rem 1rem;">
+                <input placeholder="Minimum 6 characters" required minlength="6" name="DisplayName" type="text" class="form-control form-control-modern" maxlength="50" style="font-size: 1rem; padding: 0.875rem 1rem;">
+                <div class="invalid-feedback"></div>
             </div>
 
             <div class="mb-3 d-flex gap-2">
@@ -48,12 +49,14 @@
                         <option value="Female">Female</option>
                         <option value="Others">Others</option>
                     </select>
+                    <div class="invalid-feedback"></div>
                 </div>
                 <div style="width: 50%;">
                     <label class="form-label text-white text-start d-block mb-2" style="font-weight: 500; font-size: 0.875rem;">
                         <i class="fas fa-birthday-cake me-2"></i>Age
                     </label>
                     <input placeholder="e.g., 25" class="form-control form-control-modern" type="number" required name="Age" min="13" max="100" style="font-size: 1rem; padding: 0.875rem 1rem;" />
+                    <div class="invalid-feedback"></div>
                 </div>
             </div>
 
@@ -65,6 +68,7 @@
                 <select id="select_country" name="Nationality" required class="form-control form-control-modern" style="padding: 0.875rem 1rem;">
                     <option value="" disabled selected>Select your country</option>
                 </select>
+                <div class="invalid-feedback"></div>
             </div>
             
             <div class="d-grid">
