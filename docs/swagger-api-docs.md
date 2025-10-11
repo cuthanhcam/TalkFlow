@@ -18,29 +18,29 @@ hoặc
 
 #### 🏠 **Room Management APIs**
 
-| Method | Endpoint | Mô tả | Yêu cầu Auth |
-|--------|----------|-------|--------------|
-| `GET` | `/api/v1/rooms` | Lấy danh sách tất cả rooms | ❌ |
-| `POST` | `/api/v1/rooms` | Tạo room mới | ❌ |
-| `GET` | `/api/v1/rooms/{roomId}` | Lấy thông tin room cụ thể | ❌ |
-| `POST` | `/api/v1/rooms/{roomId}/join` | Tham gia room | ❌ |
-| `PUT` | `/api/v1/rooms/{roomId}` | Cập nhật room (Host only) | ✅ Host |
-| `DELETE` | `/api/v1/rooms/{roomId}` | Xóa room (Host only) | ✅ Host |
+| Method   | Endpoint                      | Mô tả                      | Yêu cầu Auth |
+| -------- | ----------------------------- | -------------------------- | ------------ |
+| `GET`    | `/api/v1/rooms`               | Lấy danh sách tất cả rooms | ❌           |
+| `POST`   | `/api/v1/rooms`               | Tạo room mới               | ❌           |
+| `GET`    | `/api/v1/rooms/{roomId}`      | Lấy thông tin room cụ thể  | ❌           |
+| `POST`   | `/api/v1/rooms/{roomId}/join` | Tham gia room              | ❌           |
+| `PUT`    | `/api/v1/rooms/{roomId}`      | Cập nhật room (Host only)  | ✅ Host      |
+| `DELETE` | `/api/v1/rooms/{roomId}`      | Xóa room (Host only)       | ✅ Host      |
 
 #### 👥 **Stranger Matching APIs**
 
-| Method | Endpoint | Mô tả | Yêu cầu Auth |
-|--------|----------|-------|--------------|
-| `POST` | `/api/v1/strangers` | Tạo phiên stranger matching | ❌ |
-| `POST` | `/api/v1/strangers/{roomId}/join` | Tham gia stranger room | ✅ |
+| Method | Endpoint                          | Mô tả                       | Yêu cầu Auth |
+| ------ | --------------------------------- | --------------------------- | ------------ |
+| `POST` | `/api/v1/strangers`               | Tạo phiên stranger matching | ❌           |
+| `POST` | `/api/v1/strangers/{roomId}/join` | Tham gia stranger room      | ✅           |
 
 #### 👤 **Member Management APIs**
 
-| Method | Endpoint | Mô tả | Yêu cầu Auth |
-|--------|----------|-------|--------------|
-| `GET` | `/api/v1/members` | Lấy danh sách members (phân trang) | ✅ |
-| `GET` | `/api/v1/members/{userId}` | Lấy thông tin member cụ thể | ✅ |
-| `PUT` | `/api/v1/members/{userId}/lock` | Khóa/mở khóa user (Admin/Host) | ✅ Admin/Host |
+| Method | Endpoint                        | Mô tả                              | Yêu cầu Auth  |
+| ------ | ------------------------------- | ---------------------------------- | ------------- |
+| `GET`  | `/api/v1/members`               | Lấy danh sách members (phân trang) | ✅            |
+| `GET`  | `/api/v1/members/{userId}`      | Lấy thông tin member cụ thể        | ✅            |
+| `PUT`  | `/api/v1/members/{userId}/lock` | Khóa/mở khóa user (Admin/Host)     | ✅ Admin/Host |
 
 ### Backward Compatibility Routes
 
@@ -64,16 +64,18 @@ API sử dụng JWT (JSON Web Token) để xác thực. Trong Swagger UI:
 #### Tạo Room mới
 
 **Request:**
+
 ```json
 POST /api/v1/rooms
 {
   "roomName": "My Video Room",
-  "displayName": "John Doe", 
+  "displayName": "John Doe",
   "securityCode": "123456"
 }
 ```
 
 **Response:**
+
 ```json
 {
   "user": {
@@ -106,7 +108,7 @@ Ngoài REST APIs, TalkFlow cũng sử dụng SignalR cho real-time communication
 API trả về các HTTP status codes chuẩn:
 
 - `200 OK` - Request thành công
-- `201 Created` - Tạo resource thành công  
+- `201 Created` - Tạo resource thành công
 - `204 No Content` - Thành công nhưng không có nội dung trả về
 - `400 Bad Request` - Dữ liệu request không hợp lệ
 - `401 Unauthorized` - Không có quyền truy cập

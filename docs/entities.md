@@ -1,183 +1,385 @@
 # Database Entities
 
-## Tổng quan
+## Overview
 
-- **DB**: SQL Server
-- **ORM**: EF Core 8
-- **Auth**: ASP.NET Core Identity (User/Role)
-- **Migrations**: Code First
+- **Database**: SQL Server / LocalDB
+- **ORM**: Entity Framework Core 8.0.10
+- **Authentication**: ASP.NET Core Identity
+- **Migration Strategy**: Code First
+- **Connection**: Configured in `TalkFlow/appsettings.json`
 
-## Entities (Domain -> EF mapping)
+## Current Project Structure
 
-### User (IdentityUser<Guid> mở rộng trong Domain)
+**TalkFlow** has a simplified architecture with 2 main projects:
+- `TalkFlow/` - Backend API (Controllers, Services, Repositories, Entities, SignalR Hubs)
+- `TalkFlow.Web/` - Frontend Web App (MVC Controllers, Views, wwwroot)
 
-Table: `AspNetUsers`
+## Entity Relationship Diagram
 
-- Id: Guid (PK)
-- UserName: string (auto GUID)
-- Email: string?
-- DisplayName: string (ValueObject => string, max 50)
-- LastActive: DateTime (UTC)
-- IsLocked: bool (default false)
-- PhotoUrl: string? (ValueObject => string, max 500)
-- Gender: string? (Male/Female/Other/PreferNotToSay)
-- Age: int? (13..120)
-- Nationality: string? (max 100)
-- Profile: UserProfile? (1:1, optional)
-- StrangerFilter: StrangerFilter? (1:1, optional)
-- Rooms: ICollection<Room> (Host)
+```
+┌──────────────────────────┐
+│      AspNetUsers         │
+├──────────────────────────┤
+│ Id (PK, Guid)            │
+│ UserName                 │
+│ DisplayName              │
+│ Gender                   │
+│ Age                      │
+│ Nationality              │
+│ PhotoUrl                 │
+│ LastActive               │
+│ Locked                   │
+└───────┬──────────────────┘
+        │ 1:1
+        │
+┌───────▼──────────────────┐
+│    StrangerFilters       │
+├──────────────────────────┤
+│ FilterID (PK)            │
+│ _FindGender              │
+│ MinAge                   │
+│ MaxAge                   │
+│ _FindRegion              │
+│ CurrentRoomRoomId (FK)   │
+└──────────────────────────┘
 
-Indexes: DisplayName(unique), Email, LastActive
-
-### AppRole (Identity)
-
-Table: `AspNetRoles`
-
-- Id: Guid (PK)
-- Name: string (unique)
-- NormalizedName: string (unique)
-
-### Room (Aggregate Root)
-
-Table: `Rooms`
-
-- Id: Guid (PK) — RoomId (ValueObject)
-- Name: string (RoomName VO, max 100, required, unique index)
-- SecurityCode: string? (SecurityCode VO, 4..20)
-- Capacity: int (RoomCapacity VO, derived from Connections.Count)
-- HostId: Guid (FK → AspNetUsers.Id)
-- CreatedAt: DateTime (UTC)
-- IsChatBlocked: bool (default false)
-- IsActive: bool (default true)
-
-Navigation:
-
-- Connections (1:N) → `Connections`
-- Messages (1:N) → `Messages`
-
-Indexes: Name(unique), SecurityCode, HostId, CreatedAt, IsActive
-
-### Connection (Entity)
-
-Table: `Connections`
-
-- ConnectionId: string (PK, max 256)
-- UserId: Guid (FK → AspNetUsers.Id)
-- RoomId: Guid (FK → Rooms.Id)
-- ConnectedAt: DateTime (UTC)
-
-Indexes: UserId, ConnectedAt
-
-### Message (Entity)
-
-Table: `Messages`
-
-- Id: Guid (PK)
-- RoomId: Guid (FK → Rooms.Id)
-- SenderId: Guid (FK → AspNetUsers.Id)
-- SenderDisplayName: string (max 50)
-- Content: string (max 1000)
-- SentAt: DateTime (UTC)
-- IsDeleted: bool (default false)
-
-Indexes: SenderId, SentAt, IsDeleted
-
-### StrangerFilter (Entity)
-
-Table: `StrangerFilters`
-
-- Id: Guid (PK)
-- UserId: Guid (FK → AspNetUsers.Id)
-- FindGender: string (CSV persisted, mapped to ICollection<string>)
-- MinAge: int (default 0)
-- MaxAge: int (default 100)
-- FindRegion: string (CSV persisted, mapped to ICollection<string>)
-- CurrentRoomId: Guid? (nullable, tham chiếu Room đang ghép)
-- CreatedAt: DateTime (UTC)
-- UpdatedAt: DateTime? (UTC)
-
-Indexes: MinAge, MaxAge, CreatedAt
-
-### Match (Aggregate Root) - **New**
-
-Table: `Matches`
-
-- Id: Guid (PK)
-- User1Id: Guid (FK → AspNetUsers.Id)
-- User2Id: Guid (FK → AspNetUsers.Id)
-- CreatedAt: DateTime (UTC)
-- IsCompleted: bool (default false)
-- CompletedAt: DateTime? (UTC)
-
-### StrangerMatching (Aggregate Root) - **New**
-
-Table: `StrangerMatchings`
-
-- Id: Guid (PK)
-- UserId: Guid (FK → AspNetUsers.Id)
-- Status: string (Waiting/Matched/Cancelled)
-- CreatedAt: DateTime (UTC)
-- MatchedAt: DateTime? (UTC)
-- MatchedUserId: Guid? (FK → AspNetUsers.Id)
-
-## Quan hệ chính
-
-- User 1..N Room (Host)
-- Room 1..N Connection, 1..N Message
-- User 1..1 StrangerFilter
-- Connection N..1 Room, N..1 User
-- Message N..1 Room, N..1 User
-- User 1..N Match (User1 hoặc User2)
-- User 1..N StrangerMatching
-
-## Gợi ý seed & roles
-
-- Roles: Admin, Host, Member (tùy nhu cầu)
-- Seed admin user (optional)
-
-## Gợi ý index bổ sung (tối ưu truy vấn realtime)
-
-```sql
-CREATE INDEX IX_Messages_RoomId_SentAt ON Messages(RoomId, SentAt DESC);
-CREATE INDEX IX_Connections_RoomId ON Connections(RoomId);
-CREATE INDEX IX_Rooms_IsActive_CreatedAt ON Rooms(IsActive, CreatedAt DESC);
+┌──────────────────────────┐
+│         Rooms            │
+├──────────────────────────┤
+│ RoomId (PK)              │
+│ RoomName                 │
+│ SecurityCode             │
+│ CountMember              │
+│ UserId (FK)              │
+│ CreatedDate              │
+│ BlockedChat              │
+└───────┬──────────────────┘
+        │ 1:N
+        │
+┌───────▼──────────────────┐
+│      Connections         │
+├──────────────────────────┤
+│ ConnectionId (PK)        │
+│ UserID                   │
+│ RoomId (FK)              │
+└──────────────────────────┘
 ```
 
-## EF Core Configurations
+## Entities (EF Core Implementation)
 
-### Existing Configurations
-- **UserConfiguration.cs**: User entity mapping
-- **UserProfileConfiguration.cs**: UserProfile entity mapping  
-- **RoomConfiguration.cs**: Room entity mapping
-- **ConnectionConfiguration.cs**: Connection entity mapping
-- **MessageConfiguration.cs**: Message entity mapping
-- **StrangerFilterConfiguration.cs**: StrangerFilter entity mapping
-- **MatchConfiguration.cs**: Match entity mapping
-- **StrangerMatchingConfiguration.cs**: StrangerMatching entity mapping
+### AppUser (IdentityUser<Guid>)
 
-## Lưu ý mapping ValueObjects → Columns
+**Table**: `AspNetUsers`
 
-- DisplayName, RoomName, SecurityCode, PhotoUrl, Gender, Nationality: map sang string
-- Age, Capacity: map sang int  
-- Collection strings lưu CSV (FindGender, FindRegion) theo cấu hình HasConversion
+**Location**: `TalkFlow/Entities/AppUser.cs`
+
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| Id | Guid | PK, NOT NULL | User unique identifier |
+| UserName | nvarchar(256) | Unique | Username (auto-generated GUID) |
+| Email | nvarchar(256) | Nullable | Email address |
+| DisplayName | nvarchar(MAX) | NOT NULL | Display name (6-50 characters) |
+| LastActive | datetime2 | NOT NULL | Last active timestamp |
+| Locked | bit | Default(0) | Account lock status |
+| PhotoUrl | nvarchar(MAX) | Nullable | Avatar URL |
+| Gender | nvarchar(MAX) | Nullable | Male/Female/Others |
+| Age | int | Nullable | User age (13-100) |
+| Nationality | nvarchar(MAX) | Nullable | Country code (e.g., VN, US) |
+
+**Relationships**:
+- 1:1 with `StrangerFilters` (optional)
+- 1:N with `Rooms` (as Host)
+- 1:N with `Connections`
+
+**Indexes**: LastActive
+
+---
+
+### AppRole (IdentityRole<Guid>)
+
+**Table**: `AspNetRoles`
+
+**Location**: `TalkFlow/Entities/AppRole.cs`
+
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| Id | Guid | PK, NOT NULL | Role unique identifier |
+| Name | nvarchar(256) | Unique | Role name |
+| NormalizedName | nvarchar(256) | Unique | Normalized role name |
+
+**Default Roles**: Admin, Member (configured in seed data)
+
+---
+
+### Room
+
+**Table**: `Rooms`
+
+**Location**: `TalkFlow/Entities/Room.cs`
+
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| RoomId | Guid | PK, NOT NULL | Room unique identifier |
+| RoomName | nvarchar(MAX) | Nullable | Room name |
+| SecurityCode | nvarchar(MAX) | Nullable | Password for room (4-20 chars) |
+| CountMember | int | NOT NULL, Default(0) | Current member count |
+| UserId | Guid | FK, NOT NULL | Host user ID |
+| CreatedDate | datetime2 | NOT NULL | Room creation timestamp |
+| BlockedChat | bit | NOT NULL, Default(0) | Chat blocked status |
+
+**Relationships**:
+- N:1 with `AppUser` (Host)
+- 1:N with `Connections`
+
+**Navigation Properties**:
+- `AppUser User` - Host user
+- `ICollection<Connection> Connections` - Active connections
+
+**Business Rules**:
+- Room can be password-protected
+- Only host can modify room settings
+- CountMember is updated when users join/leave
+
+---
+
+### Connection
+
+**Table**: `Connections`
+
+**Location**: `TalkFlow/Entities/Connection.cs`
+
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| ConnectionId | nvarchar(450) | PK, NOT NULL | SignalR connection ID |
+| UserID | Guid | NOT NULL | User ID |
+| RoomId | Guid | FK, Nullable | Room ID (if in a room) |
+
+**Relationships**:
+- N:1 with `Rooms` (optional)
+
+**Navigation Properties**:
+- `Room? Room` - Associated room
+
+**Purpose**:
+- Track SignalR connections
+- Map connections to rooms
+- Used for broadcasting messages
+
+---
+
+### Message (Planned/Not Currently Implemented)
+
+**Table**: `Messages` (not in current schema)
+
+Note: Message persistence is not currently implemented. Messages are sent real-time via SignalR but not stored in database.
+
+If implemented, the schema would be:
+
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| Id | Guid | PK, NOT NULL | Message ID |
+| RoomId | Guid | FK, NOT NULL | Room ID |
+| SenderId | Guid | FK, NOT NULL | Sender user ID |
+| Content | nvarchar(1000) | NOT NULL | Message content |
+| SentAt | datetime2 | NOT NULL | Send timestamp |
+
+**Future Enhancement**: Add message history feature
+
+---
+
+### StrangerFilter
+
+**Table**: `StrangerFilters`
+
+**Location**: `TalkFlow/Entities/StrangerFilter.cs`
+
+| Column | Type | Constraints | Description |
+|--------|------|-------------|-------------|
+| FilterID | Guid | PK, NOT NULL | Filter unique identifier |
+| _FindGender | nvarchar(MAX) | NOT NULL | CSV: "Male,Female,Others" |
+| MinAge | int | NOT NULL, Default(0) | Minimum age preference |
+| MaxAge | int | NOT NULL, Default(100) | Maximum age preference |
+| _FindRegion | nvarchar(MAX) | NOT NULL | CSV: "VN,US,JP" |
+| CurrentRoomRoomId | Guid | FK, Nullable | Current matched room |
+
+**Relationships**:
+- 1:1 with `AppUser` (back reference via AppUser.StrangerFilterFilterID)
+- N:1 with `Rooms` (optional)
+
+**Navigation Properties**:
+- `Room? CurrentRoom` - Current matched room
+
+**Special Properties** (NotMapped):
+```csharp
+[NotMapped]
+public ICollection<string> FindGender { 
+    get => _FindGender?.Split(',').ToList() ?? new List<string>(); 
+    set => _FindGender = string.Join(',', value); 
+}
+
+[NotMapped]
+public ICollection<string> FindRegion { 
+    get => _FindRegion?.Split(',').ToList() ?? new List<string>(); 
+    set => _FindRegion = string.Join(',', value); 
+}
+```
+
+**Usage**: Stores user preferences for stranger matching algorithm
+
+---
+
+### Match & StrangerMatching (Not Implemented)
+
+Note: These entities are **not currently implemented** in the database. Stranger matching is handled in-memory via SignalR StrangerHub.
+
+---
+
+## Entity Relationships Summary
+
+```
+AppUser (1) ──── (N) Room [as Host]
+AppUser (1) ──── (1) StrangerFilter [optional]
+Room (1) ──── (N) Connection
+StrangerFilter (N) ──── (1) Room [optional CurrentRoom]
+```
+
+**Key Points**:
+- One user can host multiple rooms
+- Each user can have one stranger filter
+- Rooms contain multiple connections (SignalR)
+- Stranger filters track current matched room
+
+---
+
+## Seed Data
+
+**Location**: `TalkFlow/Data/Seed.cs`
+
+### Default Roles
+- **Admin**: Full system access
+- **Member**: Regular user access
+
+### Seed Process
+```csharp
+public static async Task SeedUsers(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+{
+    // Creates default roles if they don't exist
+    // Can be extended to create default admin user
+}
+```
+
+**Execution**: Runs automatically on application startup in `Program.cs`
+
+---
+
+## Performance Optimization
+
+### Current Indexes
+- `IX_AspNetUsers_LastActive` on AspNetUsers(LastActive)
+- Primary keys on all tables
+
+### Recommended Future Indexes
+```sql
+CREATE INDEX IX_Connections_RoomId ON Connections(RoomId);
+CREATE INDEX IX_Connections_UserID ON Connections(UserID);
+CREATE INDEX IX_Rooms_UserId_CreatedDate ON Rooms(UserId, CreatedDate DESC);
+CREATE INDEX IX_StrangerFilters_CurrentRoomRoomId ON StrangerFilters(CurrentRoomRoomId) WHERE CurrentRoomRoomId IS NOT NULL;
+```
+
+---
+
+## EF Core Configuration
+
+**Location**: `TalkFlow/Data/DataContext.cs`
+
+### DbContext
+```csharp
+public class DataContext : IdentityDbContext<AppUser, AppRole, Guid>
+{
+    public DbSet<Room> Rooms { get; set; }
+    public DbSet<Connection> Connections { get; set; }
+    public DbSet<StrangerFilter> StrangerFilters { get; set; }
+}
+```
+
+### Entity Configurations
+Configurations are defined using Fluent API in `OnModelCreating`:
+- Relationships and foreign keys
+- Index definitions
+- Column constraints
+- Default values
+
+---
+
+## Data Mapping Notes
+
+### String Properties
+- All string properties use `nvarchar(MAX)` for flexibility
+- No explicit length constraints in database (validated in application layer)
+
+### CSV Storage
+- `FindGender` and `FindRegion` stored as CSV strings
+- Converted to `ICollection<string>` via `[NotMapped]` properties
+- Example: "Male,Female,Others" → List<string> { "Male", "Female", "Others" }
+
+### Boolean Properties
+- Stored as `bit` in SQL Server
+- Default values set in migrations
+
+---
 
 ## Implementation Status
 
-### Completed
-- Tất cả entities được implement đầy đủ
-- EF Core configurations hoàn chỉnh
-- Migrations được setup
-- Value Objects mapping hoạt động
+### ✅ Completed
+- Core entities: AppUser, AppRole, Room, Connection, StrangerFilter
+- ASP.NET Core Identity integration
+- EF Core migrations
+- Seed data system
+- SignalR connection tracking
 
-### Current Database
-- **Name**: TalkFlow
+### ❌ Not Implemented
+- Message persistence (messages are real-time only)
+- Match and StrangerMatching entities
+- Message history feature
+- User profiles (separate table)
+
+### Database Information
+- **Name**: TalkFlow (or TalkFlowDb)
 - **Provider**: SQL Server / LocalDB
-- **Migrations**: Code First approach
-- **Connection**: Configured trong `TalkFlow.Presentation/appsettings.json`
+- **Migration Strategy**: Code First
+- **Connection String**: `TalkFlow/appsettings.json`
+- **Current Migration**: Initial migration with all core tables
 
-## Khả năng mở rộng
+---
 
-- Soft delete: thêm IsDeleted cho Room/User nếu cần
-- Audit: thêm CreatedBy, ModifiedBy, ModifiedAt  
-- Partition Messages theo RoomId nếu lưu lượng lớn
-- Indexing optimization cho performance
+## Future Enhancements
+
+### Planned Features
+1. **Message History**
+   - Add Messages table
+   - Store chat history
+   - Pagination support
+
+2. **Soft Delete**
+   - Add `IsDeleted` flag to Room and AppUser
+   - Implement soft delete pattern
+
+3. **Audit Trail**
+   - Add `CreatedBy`, `CreatedAt`, `ModifiedBy`, `ModifiedAt` to entities
+   - Track all changes
+
+4. **Performance**
+   - Implement caching for frequently accessed data
+   - Add database indexes for common queries
+   - Consider NoSQL for message history (MongoDB/Redis)
+
+5. **Scalability**
+   - Partition messages by RoomId if volume is high
+   - Implement database sharding
+   - Use read replicas for queries
+
+---
+
+**Last Updated**: January 2025  
+**EF Core Version**: 8.0.10  
+**Database Provider**: Microsoft.EntityFrameworkCore.SqlServer

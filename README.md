@@ -1,221 +1,388 @@
-# TalkFlow - Video Chat Application
+<div align="center">
 
-## Tổng quan
-TalkFlow là một ứng dụng video chat realtime được xây dựng theo kiến trúc Domain-Driven Design (DDD) với .NET 8.0. Ứng dụng cho phép người dùng tạo phòng chat, tham gia phòng, gọi video trực tiếp và ghép cặp ngẫu nhiên với người lạ.
+# 🎥 TalkFlow
 
-## Kiến trúc DDD
+**Real-time Video Chat Application with WebRTC and SignalR**
 
-### 1. Domain Layer (`TalkFlow.Domain`)
-- **Aggregates**: User, Room, Message, StrangerFilter, Match
-- **Value Objects**: UserId, RoomId, DisplayName, Gender, Age, RoomName, SecurityCode, etc.
-- **Domain Events**: UserCreated, RoomCreated, MessageSent, UserJoined, UserLeft, etc.
-- **Domain Services**: IUserDomainService, IRoomDomainService, IStrangerMatchingService
-- **Repositories**: IUserRepository, IRoomRepository, IMessageRepository, IMatchRepository
-- **Specifications**: UserByGenderSpecification, UserByAgeRangeSpecification, UserByNationalitySpecification
+[![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
+[![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-8.0-512BD4?logo=dotnet)](https://asp.net/)
+[![SignalR](https://img.shields.io/badge/SignalR-8.0-00ADD8?logo=signalr)](https://dotnet.microsoft.com/apps/aspnet/signalr)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-### 2. Application Layer (`TalkFlow.Application`)
-- **CQRS**: Commands và Queries với MediatR (đang phát triển)
-- **DTOs**: UserDto, RoomDto, MessageDto, CreateUserDto, CreateRoomDto, etc.
-- **Services**: IUserService, IRoomService, IMessageService với implementations
-- **Mappings**: AutoMapper profiles cho User, Room, Message
-- **Behaviors**: ValidationBehavior, LoggingBehavior, TransactionBehavior
+[Features](#-features) • [Tech Stack](#-tech-stack) • [Getting Started](#-getting-started) • [Documentation](#-documentation) • [Contributing](#-contributing)
 
-### 3. Infrastructure Layer (`TalkFlow.Infrastructure`)
-- **Data Access**: Entity Framework Core với SQL Server
-- **Repositories**: Implementation đầy đủ của Domain repositories
-- **External Services**: JwtTokenService, UserDomainService, RoomDomainService
-- **Configuration**: EF Core configurations cho tất cả entities
+</div>
 
-### 4. Presentation Layer (`TalkFlow.Presentation`)
-- **Web API**: RESTful API endpoints (User, Room, Message)
-- **SignalR Hubs**: ChatHub, PresenceHub, StrangerHub, TestHub
-- **Controllers**: UserController, RoomController, MessageController
-- **Authentication**: JWT Bearer Token
+---
 
-### 5. Shared Layer (`TalkFlow.Shared`)
-- **Constants**: ApiRoutes, SignalREvents
-- **Extensions**: ServiceCollectionExtensions
-- **Utilities**: DateTimeHelper, StringHelper
+## 📖 Overview
 
-## Tính năng chính
+**TalkFlow** is a modern, real-time video chat application that enables seamless communication through video, audio, and text. Built with .NET 8.0 and WebRTC, it offers two distinct modes of interaction:
 
-### 1. Quản lý User
-- Tạo user ẩn danh
-- Cập nhật thông tin profile
-- Khóa/mở khóa user
-- Xóa user
+- 🤝 **Friend Room Mode**: Create private rooms and invite friends with room codes
+- 🌐 **Stranger Mode**: Match randomly with people based on preferences (gender, age, location)
 
-### 2. Quản lý Room
-- Tạo phòng chat với mã bảo mật
-- Tham gia phòng bằng roomId và security code
-- Cập nhật thông tin phòng
-- Xóa phòng
-- Chặn/bỏ chặn chat
+The application leverages **WebRTC** for peer-to-peer video/audio streaming and **SignalR** for real-time messaging and signaling, providing a smooth, low-latency communication experience.
 
-### 3. Chat Realtime
-- Gửi/nhận tin nhắn realtime qua SignalR
-- Mute microphone/camera
-- Chia sẻ màn hình
-- WebRTC signaling cho video call
+---
 
-### 4. Ghép cặp ngẫu nhiên
-- Tạo filter preferences (giới tính, tuổi, quốc tịch)
-- Ghép cặp với người lạ phù hợp
-- Tự động tạo phòng khi match
+## ✨ Features
 
-## Công nghệ sử dụng
+### 🎯 Core Features
 
-- **.NET 8.0**
-- **ASP.NET Core 8.0**
-- **Entity Framework Core 8.0**
-- **SignalR 8.0**
-- **SQL Server**
-- **JWT Authentication**
-- **AutoMapper**
-- **FluentValidation**
-- **MediatR (CQRS)** - đang phát triển
+- **📹 Real-time Video/Audio Chat**: High-quality P2P video and audio communication
+- **💬 Instant Messaging**: Real-time text chat with message history
+- **🔒 Secure Rooms**: Password-protected private rooms
+- **🎲 Random Matching**: Intelligent stranger matching algorithm with customizable filters
+- **🖥️ Screen Sharing**: Share your screen with other participants
+- **🎤 Media Controls**: Mute/unmute microphone and camera
+- **👥 Multiple Participants**: Support for multi-user video conferences
+- **📱 Responsive UI**: Modern, mobile-friendly interface with Bootstrap 5
 
-## Cài đặt và chạy
+### 🛠️ Advanced Features
 
-### 1. Yêu cầu hệ thống
-- .NET 8.0 SDK
-- SQL Server hoặc SQL Server LocalDB
-- Visual Studio 2022 hoặc VS Code
+- **JWT Authentication**: Secure authentication with JSON Web Tokens
+- **Online Presence**: Real-time user presence tracking
+- **Auto-matching**: Automatic pairing based on user preferences
+- **Room Management**: Host controls for room settings and security
+- **Connection Recovery**: Automatic reconnection on network failures
 
-### 2. Clone repository
-```bash
-git clone https://github.com/cuthanhcam/TalkFlow.git
-cd TalkFlow
+---
+
+## 🏗️ Architecture
+
+The application follows a **layered architecture** with clear separation of concerns:
+
+```
+┌─────────────────────────────────────────────────────┐
+│              Frontend (TalkFlow.Web)                │
+│    ASP.NET Core MVC + Razor + JavaScript + WebRTC   │
+└───────────────────┬─────────────────────────────────┘
+                    │ HTTP / WebSocket
+┌───────────────────▼─────────────────────────────────┐
+│              Backend API (TalkFlow)                 │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────┐   │
+│  │ Controllers  │  │ SignalR Hubs │  │  Services│   │
+│  └──────┬───────┘  └──────┬───────┘  └─────┬────┘   │
+│         │                  │                │       │
+│  ┌──────▼──────────────────▼────────────────▼────┐  │
+│  │           Business Logic Layer                │  │
+│  │  Repositories • DTOs • AutoMapper             │  │
+│  └──────────────────┬────────────────────────────┘  │
+│                     │                               │
+│  ┌──────────────────▼────────────────────────────┐  │
+│  │      Entity Framework Core + Identity         │  │
+│  └──────────────────┬────────────────────────────┘  │
+└─────────────────────┼───────────────────────────────┘
+                      │
+┌─────────────────────▼───────────────────────────────┐
+│           SQL Server Database                       │
+└─────────────────────────────────────────────────────┘
 ```
 
-### 3. Cấu hình database
-Cập nhật connection string trong `src/TalkFlow.Presentation/appsettings.json`:
+### Project Structure
+
+```
+TalkFlow/
+├── TalkFlow/               # Backend API
+│   ├── Controllers/        # API Controllers
+│   ├── SignalR/           # SignalR Hubs (ChatHub, PresenceHub, StrangerHub)
+│   ├── Services/          # Business logic services
+│   ├── Repository/        # Data access layer
+│   ├── Entities/          # Database entities
+│   ├── Dtos/              # Data transfer objects
+│   ├── Data/              # DbContext and migrations
+│   └── Extensions/        # Service configuration extensions
+│
+├── TalkFlow.Web/          # Frontend Web Application
+│   ├── Controllers/       # MVC Controllers
+│   ├── Views/            # Razor views
+│   ├── Models/           # View models
+│   └── wwwroot/          # Static files (JS, CSS, images)
+│
+└── docs/                 # Documentation
+```
+
+---
+
+## 🚀 Tech Stack
+
+### Backend
+
+| Technology            | Version | Purpose                        |
+| --------------------- | ------- | ------------------------------ |
+| .NET                  | 8.0     | Runtime framework              |
+| ASP.NET Core          | 8.0     | Web framework                  |
+| Entity Framework Core | 8.0.10  | ORM for database access        |
+| SignalR               | 8.0     | Real-time communication        |
+| SQL Server            | 2022    | Database                       |
+| ASP.NET Core Identity | 8.0     | Authentication & authorization |
+| JWT Bearer            | 8.0.10  | Token-based authentication     |
+| AutoMapper            | 12.0.1  | Object-object mapping          |
+| Swagger/OpenAPI       | 9.0.6   | API documentation              |
+
+### Frontend
+
+| Technology     | Version | Purpose                   |
+| -------------- | ------- | ------------------------- |
+| Razor Pages    | -       | Server-side rendering     |
+| JavaScript     | ES6+    | Client-side logic         |
+| WebRTC API     | -       | P2P video/audio streaming |
+| Bootstrap      | 5.3     | UI framework              |
+| jQuery         | 3.7.1   | DOM manipulation          |
+| Font Awesome   | 6.x     | Icons                     |
+| SignalR Client | -       | Real-time messaging       |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0) or later
+- [SQL Server](https://www.microsoft.com/sql-server) (LocalDB or Express)
+- [Visual Studio 2022](https://visualstudio.microsoft.com/) or [VS Code](https://code.visualstudio.com/)
+- [Node.js](https://nodejs.org/) (for frontend dependencies, optional)
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/cuthanhcam/TalkFlow.git
+   cd TalkFlow
+   ```
+
+2. **Configure database connection**
+
+   Update the connection string in `TalkFlow/appsettings.json`:
+
+   ```json
+   {
+     "ConnectionStrings": {
+       "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=TalkFlowDb;Trusted_Connection=true;MultipleActiveResultSets=true"
+     }
+   }
+   ```
+
+3. **Run database migrations**
+
+   ```bash
+   cd TalkFlow
+   dotnet ef database update
+   ```
+
+4. **Run the Backend API**
+
+   ```bash
+   dotnet run
+   ```
+
+   API will be available at `https://localhost:7198` (or the port shown in console)
+
+5. **Run the Frontend Web App** (in a new terminal)
+
+   ```bash
+   cd TalkFlow.Web
+   dotnet run
+   ```
+
+   Web app will be available at `https://localhost:5001` (or the port shown in console)
+
+6. **Access the application**
+
+   Open your browser and navigate to the web app URL (e.g., `https://localhost:5001`)
+
+### Quick Start
+
+#### Friend Room Mode
+
+1. Enter your display name (6-20 characters)
+2. Click **"Create New Room"** to create a room or **"Join Existing Room"** to join
+3. Share the room URL with friends
+4. Start video chatting!
+
+#### Stranger Mode
+
+1. Navigate to **"Meet Stranger"**
+2. Fill in your information (name, gender, age, country)
+3. Set your preferences for matching
+4. Click **"Start Matching"** and wait for a match
+5. Accept the match and start chatting!
+
+---
+
+## 📚 Documentation
+
+### API Documentation
+
+When running in development mode, access Swagger UI at: `https://localhost:7198/swagger`
+
+### SignalR Hubs
+
+#### ChatHub (`/hubs/chathub`)
+
+```javascript
+// Join a room
+connection.invoke("JoinRoom", roomId, userId, displayName);
+
+// Send message
+connection.invoke("SendMessage", roomId, userId, displayName, message);
+
+// Media controls
+connection.invoke("MuteMicroPhone", roomId, userId, isMuted);
+connection.invoke("MuteCamera", roomId, userId, isMuted);
+connection.invoke("ShareScreen", roomId, userId, isSharing);
+
+// Leave room
+connection.invoke("LeaveRoom", roomId, userId);
+```
+
+#### StrangerHub (`/hubs/stranger`)
+
+Automatically matches users upon connection based on their filter preferences.
+
+#### PresenceHub (`/hubs/presence`)
+
+Tracks online/offline status of users.
+
+### Detailed Documentation
+
+For comprehensive documentation including:
+
+- Complete use cases and user flows
+- WebRTC implementation details
+- Database schema
+- Matching algorithm
+- Security considerations
+
+Please refer to: **[TALKFLOW_PROJECT_DOCUMENTATION.md](./TALKFLOW_PROJECT_DOCUMENTATION.md)**
+
+---
+
+## 🔒 Security
+
+- **JWT Authentication**: All API endpoints (except registration) require JWT tokens
+- **Password Protection**: Rooms can be secured with passwords
+- **HTTPS**: Enforced in production
+- **Input Validation**: Server-side validation for all user inputs
+- **CORS**: Configurable CORS policies
+
+---
+
+## 🛠️ Development
+
+### Project Configuration
+
+The solution uses `.NET 8.0` as specified in `global.json`:
+
 ```json
 {
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=TalkFlow;Trusted_Connection=true;MultipleActiveResultSets=true"
+  "sdk": {
+    "rollForward": "latestFeature",
+    "version": "8.0.410"
   }
 }
 ```
 
-### 4. Chạy migrations
-```bash
-cd src/TalkFlow.Presentation
-dotnet ef database update
-```
+### Code Conventions
 
-### 5. Chạy ứng dụng
-```bash
-cd src/TalkFlow.Presentation
-dotnet run
-```
+Follow the project's coding guidelines:
 
-Ứng dụng sẽ chạy tại `https://localhost:5001`
+- Commit messages: See [COMMIT_CONVENTION.md](./COMMIT_CONVENTION.md)
+- Git workflow: See [GIT_GUIDE.md](./GIT_GUIDE.md)
 
-## API Endpoints
+### Adding New Features
 
-### User Management
-- `POST /api/user` - Tạo user mới
-- `GET /api/user/{userId}` - Lấy thông tin user
-- `GET /api/user` - Lấy danh sách users (có pagination)
-- `PUT /api/user/{userId}` - Cập nhật user
-- `PUT /api/user/{userId}/lock` - Khóa user
-- `PUT /api/user/{userId}/unlock` - Mở khóa user
-- `DELETE /api/user/{userId}` - Xóa user
+1. Create a new feature branch: `git checkout -b feature/your-feature-name`
+2. Implement your changes following the existing architecture
+3. Test thoroughly (API, UI, real-time features)
+4. Submit a Pull Request with clear description
 
-### Room Management
-- `POST /api/room` - Tạo phòng mới
-- `POST /api/room/join` - Tham gia phòng
-- `GET /api/room/{roomId}` - Lấy thông tin phòng
-- `GET /api/room` - Lấy danh sách phòng (có pagination)
-- `PUT /api/room/{roomId}` - Cập nhật phòng
-- `DELETE /api/room/{roomId}` - Xóa phòng
-- `PUT /api/room/{roomId}/block-chat` - Chặn chat
-- `PUT /api/room/{roomId}/unblock-chat` - Bỏ chặn chat
+---
 
-## SignalR Hubs
-
-### ChatHub (`/hubs/chathub`)
-- `JoinRoom(roomId)` - Tham gia phòng
-- `LeaveRoom(roomId)` - Rời phòng
-- `SendMessage(roomId, message)` - Gửi tin nhắn
-- `MuteMicrophone(roomId, isMuted)` - Mute mic
-- `MuteCamera(roomId, isMuted)` - Mute camera
-- `ShareScreen(roomId, isSharing)` - Chia sẻ màn hình
-- `SendWebRTCOffer(roomId, targetUserId, offer)` - Gửi WebRTC offer
-- `SendWebRTCAnswer(roomId, targetUserId, answer)` - Gửi WebRTC answer
-- `SendIceCandidate(roomId, targetUserId, candidate)` - Gửi ICE candidate
-
-### PresenceHub (`/hubs/presence`)
-- Theo dõi trạng thái online/offline của users
-
-### StrangerHub (`/hubs/stranger`)
-- `StartMatching()` - Bắt đầu ghép cặp
-- `StopMatching()` - Dừng ghép cặp
-
-## Cấu trúc Database
-
-### Tables
-- `AspNetUsers` - Users (Identity)
-- `AspNetRoles` - Roles (Identity)
-- `AspNetUserRoles` - User-Role mapping (Identity)
-- `Rooms` - Phòng chat
-- `Connections` - SignalR connections
-- `Messages` - Tin nhắn
-- `StrangerFilters` - Filter preferences cho ghép cặp
-
-## Authentication
-
-Ứng dụng sử dụng JWT Bearer Token authentication:
-- Tạo token khi user được tạo
-- Token chứa thông tin: user_id, display_name, roles
-- Tất cả API endpoints (trừ tạo user/room) đều yêu cầu authentication
-- SignalR hubs yêu cầu JWT token
-
-## WebRTC Integration
-
-- Server chỉ làm signaling layer qua SignalR
-- Client tự thiết lập P2P connection
-- Hỗ trợ offer/answer/ICE candidate exchange
-- Cần cấu hình STUN/TURN server cho production
-
-## Development
-
-### Thêm tính năng mới
-1. Tạo Domain entities/aggregates trong `TalkFlow.Domain`
-2. Tạo Commands/Queries trong `TalkFlow.Application`
-3. Implement repositories trong `TalkFlow.Infrastructure`
-4. Tạo API endpoints trong `TalkFlow.Presentation`
-
-### Testing
-- Unit tests: `TalkFlow.UnitTests`
-- Integration tests: `TalkFlow.IntegrationTests`  
-- Architecture tests: `TalkFlow.ArchitectureTests`
-
-## Deployment
+## 🚀 Deployment
 
 ### Production Checklist
-- [ ] Cấu hình connection string production
-- [ ] Thiết lập JWT secret key mạnh
-- [ ] Cấu hình CORS cho domain cụ thể
-- [ ] Thiết lập HTTPS certificate
-- [ ] Cấu hình STUN/TURN server cho WebRTC
-- [ ] Thiết lập logging và monitoring
-- [ ] Cấu hình rate limiting
-- [ ] Thiết lập backup database
 
-## Contributing
+- [ ] Set strong JWT secret key in configuration
+- [ ] Configure production database connection string
+- [ ] Set up CORS for specific production domains
+- [ ] Configure STUN/TURN servers for WebRTC
+- [ ] Enable HTTPS with valid SSL certificate
+- [ ] Set up logging and monitoring
+- [ ] Configure rate limiting for API endpoints
+- [ ] Set up database backups
+- [ ] Review and test security settings
 
-1. Fork repository
-2. Tạo feature branch
-3. Commit changes
-4. Push to branch
-5. Tạo Pull Request
+### Environment Variables
 
-## License
+Key configuration settings in `appsettings.json`:
 
-MIT License
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "YOUR_CONNECTION_STRING"
+  },
+  "TokenKey": "YOUR_STRONG_SECRET_KEY",
+  "AllowedHosts": "*"
+}
+```
 
-## Support
+---
 
-Nếu có vấn đề hoặc câu hỏi, vui lòng tạo issue trong repository.
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes following [COMMIT_CONVENTION.md](./COMMIT_CONVENTION.md)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+Please ensure:
+
+- Code follows existing style and conventions
+- All tests pass
+- Documentation is updated if needed
+- Commit messages are clear and descriptive
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👥 Authors
+
+- **CuThanhCam** - [GitHub](https://github.com/cuthanhcam)
+
+---
+
+## 🙏 Acknowledgments
+
+- [WebRTC](https://webrtc.org/) - Real-time communication
+- [SignalR](https://dotnet.microsoft.com/apps/aspnet/signalr) - Real-time web functionality
+- [Bootstrap](https://getbootstrap.com/) - UI components
+- [Font Awesome](https://fontawesome.com/) - Icons
+
+---
+
+## 📞 Support
+
+If you have any questions or issues:
+
+- 📧 Create an issue in this repository
+- 📖 Check the [detailed documentation](./TALKFLOW_PROJECT_DOCUMENTATION.md)
+- 💬 Review [commit conventions](./COMMIT_CONVENTION.md) and [Git guide](./GIT_GUIDE.md)
+
+---
+
+<div align="center">
+
+**Made with ❤️ using .NET 8.0 and WebRTC**
+
+</div>
