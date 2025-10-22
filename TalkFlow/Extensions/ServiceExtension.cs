@@ -23,6 +23,13 @@ namespace TalkFlow.Extensions
                         // Always allow localhost for development
                         if (origin.StartsWith("http://localhost") || origin.StartsWith("https://localhost"))
                             return true;
+
+                        // Allow ngrok.io domains (for tunneling)
+                        if (origin.Contains(".ngrok-free.app") || 
+                            origin.Contains(".ngrok-free.dev") || 
+                            origin.Contains(".ngrok.io") || 
+                            origin.Contains(".ngrok.app"))
+                            return true;
                             
                         // Check configured origins
                         var allowedOrigins = configuration.GetSection("OriginAllowed").Get<string[]>();

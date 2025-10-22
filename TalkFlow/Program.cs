@@ -5,6 +5,7 @@ using TalkFlow.Middleware;
 using TalkFlow.SignalR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,14 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options => options.ConfigureSwaggerOptions());
+
+// Configure ForwardedHeaders to work with reverse proxies like ngrok
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
 builder.Services.AddCors();
 builder.Services.ConfigDatabase(builder.Configuration, builder.Environment.IsDevelopment());
@@ -58,6 +67,9 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseMiddleware<ExceptionMiddleware>();
+
+// Use forwarded headers for reverse proxy support (ngrok, etc.)
+app.UseForwardedHeaders();
 
 app.UseHttpsRedirection();
 
